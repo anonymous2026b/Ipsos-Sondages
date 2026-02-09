@@ -2,72 +2,125 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Sondages|Ipsos</title>
-<style>
-body { font-family: Arial; background:#f4f6f9; margin:0; }
+<title>Sondages | Ipsos</title>
 
-/* HEADER AVEC LOGO */
+<!-- Police -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    font-family: 'Inter', sans-serif;
+    background:#f4f6f9;
+    margin:0;
+}
+
+/* HEADER */
 .header {
     background:#003b7a;
-    padding:15px 25px;
+    padding:25px 30px;
     display:flex;
     align-items:center;
 }
+
 .header img {
+    height:50px;
+}
+
+/* LOGO FIXE SNAPCHAT */
+.logo-fixed {
+    position:fixed;
+    top:15px;
+    right:15px;
     height:45px;
-    cursor:pointer;
+    z-index:999;
 }
 
 /* CONTENU CENTRAL */
 .box {
     max-width:600px;
-    margin:60px auto;
-    background:white;
-    padding:40px;
-    border-radius:10px;
+    margin:80px auto;
+    background:#ffffff;
+    padding:45px;
+    border-radius:12px;
     text-align:center;
     box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
+.box h1 {
+    font-size:32px;
+    margin-bottom:15px;
+}
+
+.box h2 {
+    font-size:20px;
+    font-weight:400;
+    color:#333;
+    margin-bottom:30px;
+}
+
+/* BOUTON */
 a.btn {
     display:inline-block;
-    margin-top:20px;
-    padding:12px 22px;
+    padding:14px 28px;
     background:#0078d4;
-    color:white;
+    color:#ffffff;
     text-decoration:none;
-    border-radius:6px;
+    border-radius:8px;
+    font-size:20px;
+    font-weight:600;
 }
-a.btn:hover { background:#005fa3; }
-	/* LOGO PERMANENT EN HAUT À DROITE */
-.logo-fixed {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    height: 45px;
-    z-index: 9999;
-    cursor: pointer;
+
+a.btn:hover {
+    background:#005fa3;
+}
+
+/* TEXTE BAS */
+.footer-text {
+    margin-top:40px;
+    font-size:14px;
+    color:#666;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+    .box {
+        margin:30px 20px;
+        padding:30px;
+    }
+    .box h1 { font-size:26px; }
+    .box h2 { font-size:18px; }
 }
 </style>
 </head>
-<body><img src="SnapchatLogo.png" class="logo-fixed" alt="Logo">
 
-<!-- LOGO EN HAUT A GAUCHE -->
+<body>
+
+<!-- LOGO SNAPCHAT FIXE -->
+<img src="SnapchatLogo.png" class="logo-fixed" alt="Snapchat">
+
+<!-- HEADER -->
 <div class="header">
     <a href="index.html">
-        <img src="logo.png" alt="Logo">
+        <img src="logo.png" alt="Ipsos">
     </a>
 </div>
 
 <!-- CONTENU -->
 <div class="box">
     <h1>Bienvenue</h1>
-    <h2>Participez à notre sondage pour bénéficier de snapchat + gratuitement en cliquant ci‑dessous.</h2><br>
+
+    <h2>
+        Participez à notre sondage et tentez de bénéficier
+        de <strong>Snapchat+</strong> gratuitement.
+    </h2>
+
     <a class="btn" href="sondage.html">Commencer le sondage</a>
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><h3>Collaboration Deezer 🎶<br>Ce sondage est entièrement anonyme.</h3>
-	
+
+    <div class="footer-text">
+        <p>Collaboration Deezer 🎶</p>
+        <p>Ce sondage est entièrement anonyme.</p>
+    </div>
 </div>
 
 </body>
 </html>
-
