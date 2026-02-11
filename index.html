@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Sondages | Ipsos</title>
 
-<!-- Police -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -22,63 +21,75 @@ body {
     align-items:center;
 }
 
+.header a {
+    display:flex;
+    align-items:center;
+    gap:15px;
+    text-decoration:none;
+}
+
 .header img {
     height:50px;
 }
 
-/* LOGO FIXE SNAPCHAT */
+/* LOGO SNAPCHAT FIXE */
 .logo-fixed {
     position:fixed;
-    top:15px;
-    right:15px;
-    height:45px;
+    top:20px;
+    right:20px;
+    height:55px;
     z-index:999;
 }
 
 /* CONTENU CENTRAL */
 .box {
-    max-width:600px;
-    margin:80px auto;
+    max-width:650px;
+    margin:90px auto;
     background:#ffffff;
-    padding:45px;
-    border-radius:12px;
+    padding:55px;
+    border-radius:14px;
     text-align:center;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
 }
 
 .box h1 {
-    font-size:32px;
-    margin-bottom:15px;
+    font-size:36px;
+    margin-bottom:18px;
+    font-weight:700;
 }
 
 .box h2 {
-    font-size:20px;
+    font-size:22px;
     font-weight:400;
     color:#333;
-    margin-bottom:30px;
+    margin-bottom:35px;
+    line-height:1.5;
 }
 
 /* BOUTON */
 a.btn {
     display:inline-block;
-    padding:14px 28px;
+    padding:16px 32px;
     background:#0078d4;
     color:#ffffff;
     text-decoration:none;
-    border-radius:8px;
+    border-radius:10px;
     font-size:20px;
     font-weight:600;
+    transition:all 0.2s ease;
 }
 
 a.btn:hover {
     background:#005fa3;
+    transform:translateY(-2px);
 }
 
 /* TEXTE BAS */
 .footer-text {
-    margin-top:40px;
-    font-size:14px;
+    margin-top:45px;
+    font-size:15px;
     color:#666;
+    line-height:1.6;
 }
 
 /* PIED DE PAGE */
@@ -97,8 +108,9 @@ a.btn:hover {
         margin:30px 20px;
         padding:30px;
     }
-    .box h1 { font-size:26px; }
+    .box h1 { font-size:28px; }
     .box h2 { font-size:18px; }
+    .logo-fixed { height:45px; }
 }
 </style>
 </head>
@@ -111,7 +123,7 @@ a.btn:hover {
 <!-- HEADER -->
 <div class="header">
     <a href="index.html">
-        <img src="francelogo.png" alt="France" align="middle">
+        <img src="francelogo.png" alt="France">
         <img src="logo.png" alt="Ipsos">
     </a>
 </div>
@@ -140,4 +152,3 @@ a.btn:hover {
 
 </body>
 </html>
-
